@@ -29,7 +29,7 @@ void uart_test(void){
 			
 		}
 
-
+/*
 int at_uart_interpreter(uint8_t *UART_Buffer){
 
 
@@ -39,7 +39,7 @@ if (UART_Buffer[0] != '-' || UART_Buffer[1]!='m') {
 }
 
 //bitte mit zeiger machen...
-anschluss = (unit8_t)UART_Buffer[2];//achtung nicht das das als Char interpretiert wird
+anschluss = (uint8_t)UART_Buffer[2];//achtung nicht das das als Char interpretiert wird
 
 // Befehle
 	  switch(LCD_INFO(UART_Buffer[5])
@@ -77,3 +77,5 @@ void UART_ERROR(void) {
 
 
 }
+
+*/
