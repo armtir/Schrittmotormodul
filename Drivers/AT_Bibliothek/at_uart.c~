@@ -52,7 +52,7 @@ anschluss = (unit8_t)UART_Buffer[2];//achtung nicht das das als Char interpretie
 	    //write config
 	    //und initialisieren
 	    }
-	    if(UART_Buffer[6]>ascii ziffer){
+	    else{
 	    //vorprogrammiertes hernehmen
 	    //und initialisieren
 	    }
