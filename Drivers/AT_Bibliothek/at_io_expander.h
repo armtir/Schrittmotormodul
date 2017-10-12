@@ -57,8 +57,8 @@
 #define INTFB       0x0F
 #define INTCAPA     0x10
 #define INTCAPB     0x11
-#define GPIOAx      0x12
-#define GPIOBx      0x13
+#define AGPIO       0x12
+#define BGPIO       0x13
 #define OLATA       0x14
 #define OLATB       0x15
 
@@ -134,7 +134,6 @@ extern void at_expander_init(void);
  * @param  none
  * @retval none
  */
-extern void at_expander_test(void);
 
 extern void at_stck(uint8_t port);
 extern void at_reset(void);

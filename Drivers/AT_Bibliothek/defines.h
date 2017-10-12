@@ -59,6 +59,11 @@
 #define AT_ERROR  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_SET)
 #define LETZTE_ZEILE  33
 #define LETZTE_SPALTE 34
+#define LESEN 0
+#define SCHREIBEN 1
+#define FORWARD 1
+#define REVERSE 0 
+
 #ifdef ENABLE_LCD_INFO
 char str[30];
 #define LCD_INFO(...)        \
