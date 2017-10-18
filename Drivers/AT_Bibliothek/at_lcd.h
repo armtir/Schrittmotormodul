@@ -12,7 +12,7 @@
  ******************************************************************************
  */
 
-#ifndef _USE_LCD_H	
+#ifndef _USE_LCD_H
 #define _USE_LCD_H
 
 #include "defines.h"
@@ -21,9 +21,9 @@
 /**
  * @brief  Initialisiert das LCD Display und die Touchfunktion
  * @note	 Gibt Fehler aus, wenn nicht korrekt ausgefuehrt
- * @param  Uebergibt die Struktur testmin als Zeiger 
- * @retval LCD_OK                            
- * @retval LCD_NOK                          
+ * @param  Uebergibt die Struktur testmin als Zeiger
+ * @retval LCD_OK
+ * @retval LCD_NOK
  */
 extern void at_lcd_init(TM_STMPE811_t* testmin);
 
@@ -53,13 +53,13 @@ extern void at_lcd_page_1(uint16_t modul, uint16_t mode);
 
 /**
  * @brief  Testfunktion f�r das LCD Display
- * @param  Uebergibt die Struktur testmin als Zeiger. 
+ * @param  Uebergibt die Struktur testmin als Zeiger.
  * @note	 Gibt Koordinaten und Infos der Touchfunktion zurueck
- * @retval uint16_t x;                            
- * @retval uint16_t y;                          
- * @retval TM_STMPE811_State_t pressed;          
- * @retval TM_STMPE811_State_t last_pressed;     
- * @retval TM_STMPE811_Orientation_t orientation; 
+ * @retval uint16_t x;
+ * @retval uint16_t y;
+ * @retval TM_STMPE811_State_t pressed;
+ * @retval TM_STMPE811_State_t last_pressed;
+ * @retval TM_STMPE811_Orientation_t orientation;
  */
 extern void at_lcd_test(TM_STMPE811_t* testmin);
 
