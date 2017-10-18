@@ -80,7 +80,7 @@ TM_STMPE811_t testmin;
  * Anschluss: 
  *    Diese Variable muss leider global sein, weil sie in der Bibliothek von 
  *    TM in einer Unterfunktion aufgerufen wird. 
- *    Ich müsste allen Funktionen diesen Parameter übergeben und das ist eine
+ *    Ich mï¿½sste allen Funktionen diesen Parameter ï¿½bergeben und das ist eine
  *    Heidenarbeit
  *    Sie wird nur von der UART Funktion und der Initialisierung geschrieben 
  *    alle anderen lesen
@@ -89,7 +89,7 @@ TM_STMPE811_t testmin;
  *    Wird verwendet damit Interrupts nicht bevor der Initialisierungs
  *    Prozess abgeschlossen ist ausgefÃ¼hrt werden
  */
-uint8_tanschluss   = 0;
+uint8_t anschluss   = 0;
 uint8_t INIT_DONE  = FALSE;
 
 
@@ -212,8 +212,8 @@ int main(void) {
 
 //at_lcd_start();
 //at_lcd_page_1(0, 0);
-
-
+   char UART_Aux[32]={0};
+uint8_t i=97;
 /* USER CODE END 2 */
 
 /* Infinite loop */
@@ -221,7 +221,10 @@ int main(void) {
    while (1) {
 /* USER CODE END WHILE */
 /* USER CODE BEGIN 3 */
-
+	   UART_Aux[0] = i;
+	   at_lcd_debug(&UART_Aux);
+	   i++;
+	   HAL_Delay(1000);
    }
 /* USER CODE END 3 */
 }
@@ -686,7 +689,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
       test = at_expander_readdata   (ExpanderA, INTFA,   0x00);
       at_expander_readdata    (ExpanderA, INTCAPA, 0x00);
-      LCD_INFO("Interrupt:"BYTE_TO_BINARY_PATTERN,  BYTE_TO_BINARY(test));
+      LCD_INFO("Flag:"BYTE_TO_BINARY_PATTERN,  BYTE_TO_BINARY(test));
 
    }
 
@@ -697,7 +700,8 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
       HAL_Delay(10);
       test = at_expander_readdata   (ExpanderB, INTFA,   0x00);
       at_expander_readdata    (ExpanderB, INTCAPA, 0x00);
-      LCD_INFO("Interrupt:"BYTE_TO_BINARY_PATTERN,  BYTE_TO_BINARY(test));
+
+      LCD_INFO("Busy:"BYTE_TO_BINARY_PATTERN,  BYTE_TO_BINARY(test));
    }
 
 /*Interrupt USB Kabel eingesteckt (Level 5)*/

@@ -155,23 +155,23 @@ void at_lcd_state(TM_STMPE811_t* testmin) {
    switch (aktuelle_taste) {
       case 1: {  // run voll
          if (aktuelle_seite == 1)
-            at_schrittmotor_run();
+            at_schrittmotor_run(1,200);
          else if (aktuelle_seite == 2)
-            at_schritt_konfig(0);
+           // at_schritt_konfig(0);
          break;
       }
       case 2: {  // sync halb
          if (aktuelle_seite == 1)
             at_schrittmotor_sync();
          else if (aktuelle_seite == 2)
-            at_schritt_konfig(1);
+            //at_schritt_konfig(1);
          break;
       }
       case 3: {  // stop mikro
          if (aktuelle_seite == 1)
             at_schrittmotor_stop();
          else if (aktuelle_seite == 2)
-            at_schritt_konfig(4);
+           // at_schritt_konfig(4);
          break;
       }
       case 4: {  // links
@@ -299,37 +299,36 @@ void at_lcd_debug(uint8_t* UART_Aux) {
    TM_LCD_SetFont(&TM_Font_7x10);
    TM_LCD_Fill(LCD_COLOR_WHITE);
    TM_LCD_SetXY(0, 0);
-
    static uint8_t zeile = 1;
-
+   uint8_t i;
    /*
     * Wandelt das String Array in ein zweidimensionales Array um
     * Hat den Vorteil, dass man nun die Befehle zeilenweise verschieben kann
     */
-   for (int i = 0; i < LETZTE_SPALTE; i++) {
-      debug_buffer[zeile][i] = UART_Aux[i];:browse confirm wa
-
-      // memcpy(&debug_buffer[zeile][i], &UART_Aux[i], sizeof(UART_Aux[i]));
-   }
-
+   memcpy(&debug_buffer[zeile], UART_Aux, sizeof(UART_Aux));
    /*
     * Wenn die letzte Zeile erreicht ist, wird nur noch diese mit neuen
-    * Daten befüllt. Alle anderen werden nach oben geschoben
+    * Daten befï¿½llt. Alle anderen werden nach oben geschoben
     */
    if (zeile < LETZTE_ZEILE) {
       zeile++;
+
+      for(i=1; i<= zeile;i++){
+    	  TM_LCD_Puts(debug_buffer[i]);
+    	  TM_LCD_Puts("\n");
+      }
+      // hier muss noch die sache ausgegeben werden...
    }
    /*
     * Ab jetzt wird nur noch die letzte Zeile aktualisiert und die anderen 
     * nach oben geschoben...
     */
    else {
-      for (int j = 1; j < LETZTE_ZEILE; j++) {
-      memcpy(&debug_buffer[j], debug_buffer[j + 1], sizeof(debug_buffer[j + 1]);
-       LCD_INFO(debug_buffer[j]);
+      for (uint8_t j = 1; j < LETZTE_ZEILE; j++) {
+      memcpy(&debug_buffer[j], &debug_buffer[j + 1], sizeof(debug_buffer[j]));
+	  TM_LCD_Puts(debug_buffer[j]);
+	  TM_LCD_Puts("\n");
       }
-      debug_buffer[LETZTE_ZEILE] = 0;
    }
 
-   HAL_Delay(1000);
 }

@@ -23,7 +23,7 @@
 
 /*
  * globale Variable hier als extern deklariert
- * würde eigentlich in main.h gehören...
+ * wï¿½rde eigentlich in main.h gehï¿½ren...
  */
 extern uint8_t anschluss;
 
@@ -35,14 +35,13 @@ extern int at_schrittmotor_init(void);
 extern int at_schrittmotor_param(uint8_t rw, uint8_t vordefiniert);
 void L3518_init(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);
 void LSP1518_init(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);
-void at_schrittmotor_get_param(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct,
-                               uint8_t modul);
+void at_schrittmotor_get_param(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);
 
 extern void at_schritt_konfig(uint8_t schritt);
 extern void at_schrittmotor_print_data(uint8_t data);
 extern void at_schrittmotor_test(void);
 extern void at_schrittmotor_stop(void);
-extern void at_schrittmotor_run(void);
+extern void at_schrittmotor_run(uint8_t FWDREV, uint8_t speed);
 extern void at_schrittmotor_sync(void);
 extern void at_schrittmotor_step(void);
 

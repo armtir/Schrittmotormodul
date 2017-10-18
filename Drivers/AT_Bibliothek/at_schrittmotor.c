@@ -78,9 +78,9 @@ int at_schrittmotor_init(void) {
       anschluss = i;
       dSPIN_Reset_Device();
       /*
-       * prüft ob irgendetwas zurück kommt, wenn ja dann ist das modul
+       * prï¿½ft ob irgendetwas zurï¿½ck kommt, wenn ja dann ist das modul
        * angesteckt diese Info wird genutzt um bei der Initialisierung
-       * auszugeben, welche module aktiv sind. Es wird immer +1 dazugezählt und
+       * auszugeben, welche module aktiv sind. Es wird immer +1 dazugezï¿½hlt und
        * um ein bit nach links geschoben
        */
       if (dSPIN_Get_Status() != 0) {
@@ -105,7 +105,7 @@ int at_schrittmotor_param(uint8_t rw, uint8_t vordefiniert) {
       at_schrittmotor_get_param(&dSPIN_RegsStruct);
       // jetzt muss es noch am uart oder sonst wo ausgegeben werden
    } else if (rw == SCHREIBEN) {
-      // hier müssen jetzt diese register gesperichert werden...
+      // hier mï¿½ssen jetzt diese register gesperichert werden...
    }
 
    else if (vordefiniert == 1) {
@@ -117,7 +117,7 @@ int at_schrittmotor_param(uint8_t rw, uint8_t vordefiniert) {
       LSP1518_init(&dSPIN_RegsStruct);
       dSPIN_Registers_Set(&dSPIN_RegsStruct);
    }
-   // ich könnte die funktion als int deklarieren udn den wert 0 zurück schicken
+   // ich kï¿½nnte die funktion als int deklarieren udn den wert 0 zurï¿½ck schicken
    // der wird dann dazu benutzt um den anschluss auf 0 zu setzen
    return 0;
 }
@@ -251,13 +251,13 @@ void at_schrittmotor_get_param(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct) {
  ******************************************************************************
  */
 
-void at_schrittmotor_run(uint8_t FWDREV, unint8_t speed) {
+void at_schrittmotor_run(uint8_t FWDREV, uint8_t speed) {
    dSPIN_Run(FWDREV, Speed_Steps_to_Par(speed));
 }
 
 void at_schrittmotor_step(void) {
-   // hier hab ich wieder einen scheiß beinand weil die expander ports
-   // nicht mit den tatsächlichen modulen übereinstimmen...
+   // hier hab ich wieder einen scheiï¿½ beinand weil die expander ports
+   // nicht mit den tatsï¿½chlichen modulen ï¿½bereinstimmen...
    at_stck(anschluss);
 }
 
@@ -281,7 +281,7 @@ void at_schrittmotor_print_data(uint8_t data) {
          LCD_INFO("LSP1518");  // werte aus dem vordefiniertem register
       } break;
       case 1: {
-         at_schrittmotor_get_param(&dSPIN_RegsStruct, 1);  // werte aus modul 1
+         at_schrittmotor_get_param(&dSPIN_RegsStruct);  // werte aus modul 1
          LCD_INFO("Modul 1");
       } break;
       default:

@@ -57,7 +57,7 @@
 //#define CLK16_enable
 
 #define AT_ERROR HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_SET)
-#define LETZTE_ZEILE 32
+#define LETZTE_ZEILE 33
 #define LETZTE_SPALTE 34
 #define LESEN 0
 #define SCHREIBEN 1
@@ -68,7 +68,7 @@
 #ifdef ENABLE_LCD_INFO
 char str[30];
 #define LCD_INFO(...)            \
-   \ {                           \
+     {                           \
       sprintf(str, __VA_ARGS__); \
       TM_LCD_Puts(str);          \
       TM_LCD_Puts("\n");         \

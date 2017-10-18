@@ -73,7 +73,7 @@
 #define GPPUA 0x06
 #define INTFA 0x07
 #define INTCAPA 0x08
-#define GPIOAx 0x12
+#define AGPIO 0x12
 #define OLATA 0x0A
 
 #define IODIRB 0x10
@@ -84,7 +84,7 @@
 #define GPPUB 0x16
 #define INTFB 0x17
 #define INTCAPB 0x18
-#define GPIOBx 0x19
+#define BGPIO 0x19
 #define OLATB 0x1A
 
 #endif
@@ -126,7 +126,7 @@ extern int at_expander_readdata(uint8_t opcode, uint8_t adress, uint8_t data);
  * @param  none
  * @retval none
  */
-extern void at_expander_init(void);
+extern int at_expander_init(void);
 
 /**
  * @brief  Testfunktion f�r Expander
