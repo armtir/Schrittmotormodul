@@ -7,8 +7,8 @@
  * @date    16.05.2017
  * @ide     Keil uVision V5.23.0.0
  * @brief   LCD Treiberbibliothek
- * @note    Enth�lt Funktionen zur grafischen Ausgabe
- * Enth�lt keine Konfigurationsparameter --> nicht �ndern
+ * @note    Enthält Funktionen zur grafischen Ausgabe
+ * Enthält keine Konfigurationsparameter --> nicht ändern
  ******************************************************************************
  */
 

@@ -34,8 +34,9 @@ Src/main.o: ../Src/main.c \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_lcd.h \
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_io_expander.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h \
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_lcd.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32f4_stmpe811.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_i2c.h \
@@ -44,21 +45,20 @@ Src/main.o: ../Src/main.c \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_gpio.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/attributes.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_delay.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_uart.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_schrittmotor.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin_config.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin_config.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_io_expander.h \
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_uart.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_lcd.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_sdram.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_fonts.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_dma2d_graphic.h \
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_spi.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_usart.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_buffer.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_spi.h
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_buffer.h
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Inc/main.h:
 
@@ -130,9 +130,11 @@ Src/main.o: ../Src/main.c \
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
 
-/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_lcd.h:
+/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_io_expander.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h:
+
+/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_lcd.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32f4_stmpe811.h:
 
@@ -150,8 +152,6 @@ Src/main.o: ../Src/main.c \
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_delay.h:
 
-/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_uart.h:
-
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_schrittmotor.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin.h:
@@ -162,7 +162,7 @@ Src/main.o: ../Src/main.c \
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin_config.h:
 
-/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_io_expander.h:
+/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_uart.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_lcd.h:
 
@@ -172,10 +172,10 @@ Src/main.o: ../Src/main.c \
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_dma2d_graphic.h:
 
+/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_spi.h:
+
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_usart.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_usart.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_buffer.h:
-
-/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_spi.h:

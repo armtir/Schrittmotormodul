@@ -77,7 +77,7 @@ int at_expander_init(void) {
     * Expander B
     * Register A0-A7 Interupt "Busy"
     * Interuptflag B setzen Active-High
-    * NVIC Prioritï¿½t gering --> 4
+    * NVIC Priorität gering --> 4
     * De ham wos beinand in dem Datenblattl...
     * Wir brauchen Interrupt On pin
     */

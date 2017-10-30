@@ -64,11 +64,15 @@
 #define FORWARD 1
 #define REVERSE 0
 
+#define MAX_BUFFER 100
+#define MAX_ZEILE 33
+#define MAX_SPALTE 35
+
 /* Zu Debugzwecken eingebaut */
 #ifdef ENABLE_LCD_INFO
 char str[30];
 #define LCD_INFO(...)            \
-     {                           \
+   {                             \
       sprintf(str, __VA_ARGS__); \
       TM_LCD_Puts(str);          \
       TM_LCD_Puts("\n");         \

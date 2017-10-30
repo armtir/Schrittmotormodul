@@ -9,7 +9,7 @@
  * @brief   Schrittmotor-Headerfile
  * @brief   Expandertreiber
  * @note
- * Definitionen f�r den 16 Bit I/O Expander
+ * Definitionen für den 16 Bit I/O Expander
  * Hier stehen alle Register mit einer klaren Definition drin
  * ***do not edit***
  ******************************************************************************
@@ -38,7 +38,8 @@
  * mit den Rückgabewerten funktioniert...
  */
 
-#if defined(Expander_16Bit_Mode)  // Bank0
+/* Bank0 */
+#if defined(Expander_16Bit_Mode)
 
 #define IODIRA 0x00
 #define IODIRB 0x01
@@ -50,7 +51,7 @@
 #define DEFVALB 0x07
 #define INTCONA 0x08
 #define INTCONB 0x09
-#define IOCON 0x0A  // alternativ auch 0x0B
+#define IOCON 0x0A  /* alternativ auch 0x0B */
 #define GPPUA 0x0C
 #define GPPUB 0x0D
 #define INTFA 0x0E
@@ -62,14 +63,15 @@
 #define OLATA 0x14
 #define OLATB 0x15
 
-#else  // 8 Bit mode (Bank1)
+/* 8 Bit Modus auch Bank1 genannt */
+#else
 
 #define IODIRA 0x00
 #define IPOLA 0x01
 #define GPINTENA 0x02
 #define DEFVALA 0x03
 #define INTCONA 0x04
-#define IOCON 0x05  // alternativ auch 0x15
+#define IOCON 0x05  /* alternativ auch 0x15 */
 #define GPPUA 0x06
 #define INTFA 0x07
 #define INTCAPA 0x08
