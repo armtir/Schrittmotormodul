@@ -57,16 +57,18 @@
 //#define CLK16_enable
 
 #define AT_ERROR HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_SET)
+
 #define LETZTE_ZEILE 33
 #define LETZTE_SPALTE 34
 #define LESEN 0
 #define SCHREIBEN 1
 #define FORWARD 1
 #define REVERSE 0
-
-#define MAX_BUFFER 100
-#define MAX_ZEILE 33
-#define MAX_SPALTE 35
+/* Der Buffer muss nur so groß sein, dass sich ein Befehl ausgeht ?34? */
+#define MAX_BUFFER 50
+/* 32 Zeilen, 34 Spalten bei einer Schrift von 7x10 */
+#define MAX_ZEILE 32
+#define MAX_SPALTE 34
 
 /* Zu Debugzwecken eingebaut */
 #ifdef ENABLE_LCD_INFO
@@ -80,7 +82,6 @@ char str[30];
 #endif
 
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"
-// test
 #define BYTE_TO_BINARY(byte)                                     \
    (byte & 0x8000 ? '1' : '0'), (byte & 0x4000 ? '1' : '0'),     \
        (byte & 0x2000 ? '1' : '0'), (byte & 0x1000 ? '1' : '0'), \
@@ -90,6 +91,18 @@ char str[30];
        (byte & 0x20 ? '1' : '0'), (byte & 0x10 ? '1' : '0'),     \
        (byte & 0x08 ? '1' : '0'), (byte & 0x04 ? '1' : '0'),     \
        (byte & 0x02 ? '1' : '0'), (byte & 0x01 ? '1' : '0')
+
+#define BYTE_TO_BINARY_PATTERN8 "%c%c%c%c%c%c%c%c"
+#define BYTE_TO_BINARY8(byte)                                     \
+       (byte & 0x80 ? '1' : '0'), (byte & 0x40 ? '1' : '0'),     \
+       (byte & 0x20 ? '1' : '0'), (byte & 0x10 ? '1' : '0'),     \
+       (byte & 0x08 ? '1' : '0'), (byte & 0x04 ? '1' : '0'),     \
+       (byte & 0x02 ? '1' : '0'), (byte & 0x01 ? '1' : '0')
+
+
+
+
+
 
 /****************************************************************************
  * Makros f�r die TM Bibliothek

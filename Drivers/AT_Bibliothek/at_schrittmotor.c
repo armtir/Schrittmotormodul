@@ -69,13 +69,14 @@ int at_dSPIN_Write_Byte(uint8_t byte) {
    }
 }
 
-int at_schrittmotor_init(void) {
+uint8_t at_schrittmotor_init(void) {
    uint8_t aktive_module = 0;
    /* Zuerst ein Reset aller Module */
-   for (uint8_t i = 1; i <= 8; i++) {
+   for (uint8_t i = 8; i >= 1; i--) {
       /*ohne diese Verzögerung funktioniert der Treiber nicht korrekt*/
-      HAL_Delay(100);
-      anschluss = i;
+	      HAL_Delay(100);
+
+	   anschluss = i;
       dSPIN_Reset_Device();
       /*
        * pr�ft ob irgendetwas zur�ck kommt, wenn ja dann ist das modul
@@ -83,13 +84,19 @@ int at_schrittmotor_init(void) {
        * auszugeben, welche module aktiv sind. Es wird immer +1 dazugez�hlt und
        * um ein bit nach links geschoben
        */
+      HAL_Delay(100);
+
       if (dSPIN_Get_Status() != 0) {
          aktive_module += 1;
       }
-      aktive_module << 1;
+
+      if (i != 1 ) {
+      aktive_module = aktive_module << 1;
+      }
    }
    // Hier wrid der anschluss geschrieben. Das ist eine ausnahme
    // sonst immer nur in den uart funktionen
+   // Das passiert aber noch in der initialisierungspahse
    anschluss = 0;
    return aktive_module;
 }

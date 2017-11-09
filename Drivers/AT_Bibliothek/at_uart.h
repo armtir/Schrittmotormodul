@@ -17,6 +17,6 @@
 #include "stm32f4xx_hal.h"
 
 extern void uart_test(void);
-extern void at_uart_interpreter(uint8_t *UART_Buffer);
+extern int at_uart_interpreter(char* UART_Buffer);
 
 #endif

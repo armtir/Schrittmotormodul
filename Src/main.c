@@ -96,6 +96,7 @@ TM_STMPE811_t LCD_Config;
  *    Prozess abgeschlossen ist ausgeführt werden
  */
 uint8_t anschluss = 0;
+uint8_t aktive_ports = 0;
 uint8_t INIT_DONE = FALSE;
 
 /* Diese hier werden noch als lokale
@@ -104,6 +105,8 @@ uint8_t INIT_DONE = FALSE;
 uint8_t aktuelle_seite = 0;
 uint8_t aktuelle_taste = 0;
 
+/* UART Buffer für Ein- und Ausgabe */
+char UART1_Data = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -124,10 +127,6 @@ static void MX_I2C3_Init(void);
 /* USER CODE END PFP */
 
 /* USER CODE BEGIN 0 */
-/* UART1_data keine ahnung... */
-char UART1_Data = 0;
-/* UART Buffer für Ein- und Ausgabe */
-/* was das ist weis ich auch nicht... */
 /* USER CODE END 0 */
 
 int main(void) {
@@ -165,7 +164,6 @@ int main(void) {
    MX_I2C3_Init();
 
    /* USER CODE BEGIN 2 */
-
    /* Setze alle CS Signale auf Inaktiv
     *
     * Könnte man auch mit Enumeration lösen...
@@ -190,13 +188,14 @@ int main(void) {
    at_lcd_page_0();
    LCD_INFO("Initialisierung");
    HAL_Delay(1000);
-   at_schrittmotor_init();
+   aktive_ports = at_schrittmotor_init();
    HAL_Delay(100);
    at_expander_init();
    HAL_Delay(100);
    LCD_INFO("abgeschlossen");
-   LCD_INFO("uint8 %d", sizeof(uint8_t));
-   LCD_INFO("char %d", sizeof(UART1_Data));
+   LCD_INFO("Angeschlossene Module:")
+   LCD_INFO(BYTE_TO_BINARY_PATTERN8,
+            BYTE_TO_BINARY8(aktive_ports));
    HAL_Delay(2000);
    TM_LCD_Init();
    HAL_Delay(2000);
@@ -219,7 +218,8 @@ int main(void) {
    // char UART_Aux[32] = {0};
    // uint8_t i = 97;
    /* USER CODE END 2 */
-
+   anschluss = 1;
+   at_schrittmotor_param(2, 2);
    /* Infinite loop */
    /* USER CODE BEGIN WHILE */
    while (1) {
@@ -648,6 +648,12 @@ static void MX_GPIO_Init(void) {
  *******************************************************************************
  */
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+   uint8_t flag_input = 0;
+   char flag[11];
+
+   uint8_t busy_input = 0;
+   char busy[11];
+
    /*
     * Interrupt blauer Taster (Level 4)
     * Der blaue Taster hat keine spezifische Funktion.
@@ -665,16 +671,34 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     * einen Fehler signalisiert
     */
    if (GPIO_Pin == GPIO_PIN_2 && INIT_DONE) {
-      uint8_t test = 0;
       /*
        * Warten bis spi pipe frei ist
        * Besser wäre hier: HAL_SPI_STATE_BUSY_TX_RX abfragen
+       * Wartet man nicht, riskiert man ein falsches Ergebnis
        */
       HAL_Delay(10);
 
-      test = at_expander_readdata(ExpanderA, INTFA, 0x00);
+      flag_input = at_expander_readdata(ExpanderA, INTFA, 0x00);
+
+      snprintf(flag, sizeof flag, BYTE_TO_BINARY_PATTERN,
+               BYTE_TO_BINARY(flag_input));
+      flag[8] = 'F';
+      flag[9] = 0x00;
+      if (aktuelle_seite == 1) {
+         TM_LCD_SetXY(77, 310);
+         TM_LCD_Puts(flag);
+      }
+      /*
+       * Damit der String sauber an den UART übergeben wird, wird CR NL und NULL
+       * eingefügt
+       */
+      flag[9] = 0x0A;
+      flag[10] = 0x0D;
+      flag[11] = 0x00;
+      TM_USART_Puts(USART1, flag);
+
+      /* Busy zurücksetzen */
       at_expander_readdata(ExpanderA, INTCAPA, 0x00);
-      LCD_INFO("Flag:" BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(test));
    }
 
    /*
@@ -682,13 +706,26 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     * Signalisiert ob Befehle noch abgearbeitet werden
     */
    if (GPIO_Pin == GPIO_PIN_3 && INIT_DONE) {
-      uint8_t test = 0;
       /* Warten bis spi pipe frei ist */
       HAL_Delay(10);
-      test = at_expander_readdata(ExpanderB, INTFA, 0x00);
-      at_expander_readdata(ExpanderB, INTCAPA, 0x00);
+      busy_input = at_expander_readdata(ExpanderB, INTFA, 0x00);
 
-      LCD_INFO("Busy:" BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(test));
+      // Abfrage ob input != 0 sonst nichts ausgeben
+      snprintf(busy, sizeof busy, BYTE_TO_BINARY_PATTERN,
+               BYTE_TO_BINARY(busy_input));
+      busy[8] = 'B';
+      busy[9] = 0x00;
+      if (aktuelle_seite == 1) {
+         TM_LCD_SetXY(0, 310);
+         TM_LCD_Puts(busy);
+      }
+
+      busy[9] = 0x0A;
+      busy[10] = 0x0D;
+      busy[11] = 0x00;
+      TM_USART_Puts(USART1, busy);
+
+      at_expander_readdata(ExpanderB, INTCAPA, 0x00);
    }
 
    /*
@@ -727,10 +764,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
    /*
     * Initialisierungsvorgang mittels static Variable
     * Buffer initialisieren
-    * Warten bis kein Müll mehr daherkommt... (zu Beginn wird irgendwas in den 
-    * Buffer geschrieben)
+    * Warten bis kein Müll mehr daherkommt... (zu Beginn wird irgendwas in den
+    * Buffer geschrieben) deshalb die '~' abfrage
     */
-
    if (init == 1 || UART1_Data == '~') {
       UART1_Data = 0;
       memset(UART_Buffer, 0, MAX_BUFFER);
@@ -739,17 +775,38 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
 
    /* Fülle Buffer mittels Callbackfunktion */
    if (huart->Instance == USART1) {
-      /* Solange kein Zeilenumbruch CR (0x0D) weiter Buffer befüllen  */
-      if (UART1_Data != 0x0D) {
-         UART_Buffer[len] = UART1_Data;
-         /* len ist gleich die Stringlänge */
-         len++;
-         /* Wenn CR erreicht \0 rein schreiben und auf Display und UART */
-      } else {
-         UART_Buffer[len] = '\0';
-         // at_uart_interpreter(&UART_Buffer);
+      /*
+       * Eine UART Eingabe endet immer mit einem CR zumindest bei meinem PC
+       * Solange kein Zeilenumbruch CR (0x0D) --> weiter Buffer befüllen
+       */
+      UART_Buffer[len] = UART1_Data;
+      len++;
+
+      /*
+       * weil CR immer ein seltsames zeichen ausgibt und beim LCD Display
+       * nicht gebraucht wird, ist die ausgabe hier dazwischen
+       * Etwas verwirrend, weil Newline mit CR getausch wird
+       * Das LCD hat halt keinen sauberen 0x00 abschluss...
+       */
+      if (UART1_Data == 0x0D) {
+
+    	 /* fuer die lcd ausgabe braucht man ein \n */
+         UART_Buffer[len - 1] = 0x0A;
          at_lcd_debug(&UART_Buffer);
+
+         /* um einen sauberen string an den parser zu schicken entferne ich das \n */
+         UART_Buffer[len - 1] = 0x00;
+         at_uart_interpreter(&UART_Buffer);
+
+
+#ifdef UART_DEBUG
+         UART_Buffer[len - 1] = 0x0A;
+         UART_Buffer[len] = 0x0D;
+         len++;
+         UART_Buffer[len] = 0x00;
+
          HAL_UART_Transmit(&huart1, UART_Buffer, len, 1000);
+#endif
 
          /* len und Buffer zurücksetzen */
          memset(UART_Buffer, 0, MAX_BUFFER);
