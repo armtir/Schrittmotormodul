@@ -10,10 +10,8 @@
 
 #include "stdint.h"
 
-
-
-	void test1( int argc, const char* argv[] );
-	void test2( int argc, const char* argv[] );
+void test1(int argc, const char* argv[]);
+void commands(int argc, char* argv[]);
 
 /*
  *******************************************************************************
@@ -37,7 +35,6 @@ void uart_test(void) {
    TM_LCD_Puts(str);
 }
 
-
 /*
  *******************************************************************************
  * UART Interpreter / Parser
@@ -50,98 +47,90 @@ void uart_test(void) {
  * -r<char>=<int> 	 Run f,r = 200
  * -s				 Stop
  *
- *   
- * 
+ *
+ *
 
 
 */
 
+int at_uart_interpreter(const char* UART_Buffer) {
+   /*ich glaube jetzt habe ich es verstanden
+    * wir definieren einen konstanten char zeiger auf arrays
+    * warum array? weil argv aus mehreren argumenten besteht erstes argument
+    * zweites argument etc.
+    *
+    * */
+   int i = 0;
+   int argc = 0;
+   int buffer_len = strlen(UART_Buffer) + 1;  // strlen(UART_Buffer)+1;
+   char buf[buffer_len];
+   const char* delimiter = " -";
 
+   memcpy(buf, UART_Buffer, buffer_len);
 
+   char* argv[10];
+   const char* token;
 
+   // LCD_INFO("ARRAY START &argv:%d, argv:%d, *argv:%d", &argv[0], argv[0],
+   // *argv[0]);
 
-int at_uart_interpreter(char* UART_Buffer) {
+   /* erstelle argc und argv */
+   /* Kopiere string */
+   /* konstanter char zeiger auf adresse 0 von uart_buffer*/
+   // zeile = &UART_Buffer[0];
+   /* Lösche Scheiß raus */
+   //	while (buf[i] < 0x20 || 0x7A > buf[i] ) {
+   //		buf[i] = NULL;
+   //		i++;
+   //	}
 
-	/*ich glaube jetzt habe ich es verstanden
-	 * wir definieren einen konstanten char zeiger auf arrays
-	 * warum array? weil argv aus mehreren argumenten besteht erstes argument
-	 * zweites argument etc.
-	 *
-	 * */
-	 const char* argv[5];
+   token = strtok(buf, delimiter);
 
-	 //char * const argv[MAX_BUFFER];
-	int   argc;
+   while (token != NULL && argc < 10 - 1) {
+      /* das depperte argv ist also auch nur eine pointerverlinkung?*/
+      /* dem argv  wird also immer die nächste adresse nach einem leerzeichen
+       * gegeben*/
+      argv[argc++] = token;
+      token = strtok(NULL, delimiter);
+      //  LCD_INFO("argv &:%d, a:%d, *:%d", &argv[argc], argv[argc],
+      //  *argv[argc]);
+   }
+   argv[argc] = NULL;
+   // test1( argc, argv );
+   commands(argc, argv);
 
-/* erstelle argc und argv */
-	/* Kopiere string */
-	/* konstanter char zeiger auf adresse 0 von uart_buffer*/
-	const char* zeile = &UART_Buffer[0];
+   return 0;
 
-	argc = 0;
-	char* Token = strtok( zeile, " " );
+   /*
+            result=strchr(str,'-');
+             while (result!=NULL)
+             {
+               LCD_INFO("found at %d\n",result-str+1);
+               result=strchr(result+1,'-');
+             }
+   */
+   /* suche den ganzen string nach '-' ab */
+   // while((result = strchr(result, target)) != NULL) {
 
-	while( Token != NULL && argc < MAX_BUFFER - 1) {
-	    argv[argc++] = Token;
-	    Token = strtok( NULL, " " );
-	  }
-	  argv[argc] = NULL;
-	 // test1( argc, argv );
-	test2( argc, argv );
+   /* ermittle wo das '-' steht */
+   //    LCD_INFO("Found '%c' starting at '%s'\n", target, result);
+   // index = (int) (strlen(result) - strlen(kopie));
+   //  ++result;
 
+   //	switch(UART_Buffer[index + 1]) {
 
+   //	}
+   //	}
 
-
-
-	   //      memset(argv, 0, MAX_BUFFER);
-
-	     return 0;
-
-
-
-
-
-
-
-
-/*
-	 result=strchr(str,'-');
-	  while (result!=NULL)
-	  {
-	    LCD_INFO("found at %d\n",result-str+1);
-	    result=strchr(result+1,'-');
-	  }
-*/
-	/* suche den ganzen string nach '-' ab */
-	//while((result = strchr(result, target)) != NULL) {
-
-	/* ermittle wo das '-' steht */
-	//    LCD_INFO("Found '%c' starting at '%s'\n", target, result);
-		//index = (int) (strlen(result) - strlen(kopie));
-	  //  ++result;
-
-
-
-
-//	switch(UART_Buffer[index + 1]) {
-
-
-
-
-
-//	}
-//	}
-
-//
-//   if (strncmp(UART_Buffer, "on", 2) == 0) {
-//      at_schrittmotor_test();
-//   }
-//
-//   if (strncmp(UART_Buffer, "off", 3) == 0) {
-//      at_schrittmotor_stop();
-//   }
-
-	}
+   //
+   //   if (strncmp(UART_Buffer, "on", 2) == 0) {
+   //      at_schrittmotor_test();
+   //   }
+   //
+   //   if (strncmp(UART_Buffer, "off", 3) == 0) {
+   //      at_schrittmotor_stop();
+   //   }
+}
 /*
 int at_uart_interpreter(uint8_t *UART_Buffer){
 
@@ -194,87 +183,59 @@ void UART_ERROR(void) {
 
 */
 
+void commands(int argc, char* argv[]) {
+   char option = 0;
+   int direction = 0;
+   int speed = 0;
 
-void test1( int argc, const char* argv[] )
-{
-  while( *argv != NULL ) {
+   while (*argv != NULL) {
+      /*
+       * Prüft ob String nur ein Zeichen lang ist, wenn ja handelt es sich
+       * um einen Befehl. Um an das Zeichen zu kommen muss man zwei mal
+       * dereferenzieren.
+       * Abschließend wird per switch das Zeichen interpretiert
+       */
 
-    LCD_INFO( "*%s*\n", *argv );
-    argv++;
-  }
-}
+      if (strlen(*argv) == 1) {
+         option = **argv;
 
-void test2( int argc,  const char* argv[] )
-{
-  //for( int i = 0; i < argc; ++i ) {
-	//  LCD_INFO("argc:%d", argc);
-
-	if( argv[1] != NULL ) {
-  	  LCD_INFO( "*%s*\n", argv[1]);
-	}
-  //}
-	  // LCD_INFO("Falsche Eingabe1");
-	  // LCD_INFO("String: %s",*argv);
-
-  int option = 0;
-      int area = -1, perimeter = -1, breadth = -1, length =-1;
-
-      //Specifying the expected options
-      //The two options l and b expect numbers as argument
-
-
-   while( *argv != NULL ) {
-   	   LCD_INFO("Falsche Eingabe1");
-
-      while ((option = getopt(argc, argv,"apl:b:")) != -1) {
-   	   LCD_INFO("Falsche Eingabe2");
-
-          switch (option) {
-               case 'a' : area = 0;
-                   break;
-               case 'p' : perimeter = 0;
-                   break;
-               case 'l' : length = atoi(optarg);
-                   break;
-               case 'b' : breadth = atoi(optarg);
-                   break;
-               default:
-            	   LCD_INFO("Falsche Eingabe3");
-                  // exit(EXIT_FAILURE);
-            	   break;
-          }
+         switch (option) {
+            case 'm':
+               argv++;
+               anschluss = atoi(*argv);
+               break;
+            case 'r':
+               argv++;
+               if (**argv == 'f') {
+                  direction = 1;
+               } else {
+                  direction = 0;
+               }
+               argv++;
+               speed = atoi(*argv);
+               at_schrittmotor_run(direction, speed);
+               break;
+            case 's':
+               at_schrittmotor_stop();
+               break;
+            case 'c':
+               argv++;
+               if (**argv == 'r') {
+                  at_schrittmotor_param(LESEN);
+               } else if (**argv == 'w') {
+                  at_schrittmotor_param(SCHREIBEN);
+               } else if (**argv == '1') {
+                  at_schrittmotor_param(99);
+               } else if (**argv == '2') {
+                  at_schrittmotor_param(98);
+               }
+               break;
+            default:
+               LCD_INFO("Falsche Eingabe");
+               // exit(EXIT_FAILURE);
+               break;
+         }
       }
-    argv++;
+      argv++;
    }
-
-      if (length == -1 || breadth ==-1) {
-
-         // exit(EXIT_FAILURE);
-      }
-
-      // Calculate the area
-      if (area == 0) {
-          area = length * breadth;
-          LCD_INFO("Area: %d\n",area);
-      }
-
-      // Calculate the perimeter
-      if (perimeter == 0) {
-          perimeter = 2 * (length + breadth);
-          LCD_INFO("Perimeter: %d\n",perimeter);
-      }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

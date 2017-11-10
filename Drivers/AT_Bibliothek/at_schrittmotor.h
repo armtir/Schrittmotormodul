@@ -32,7 +32,7 @@ extern uint8_t anschluss;
 
 extern int at_dSPIN_Write_Byte(uint8_t byte);
 extern uint8_t at_schrittmotor_init(void);
-extern int at_schrittmotor_param(uint8_t rw, uint8_t vordefiniert);
+extern int at_schrittmotor_param(uint8_t option);
 void L3518_init(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);
 void LSP1518_init(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);
 void at_schrittmotor_get_param(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct);

@@ -194,8 +194,7 @@ int main(void) {
    HAL_Delay(100);
    LCD_INFO("abgeschlossen");
    LCD_INFO("Angeschlossene Module:")
-   LCD_INFO(BYTE_TO_BINARY_PATTERN8,
-            BYTE_TO_BINARY8(aktive_ports));
+   LCD_INFO(BYTE_TO_BINARY_PATTERN8, BYTE_TO_BINARY8(aktive_ports));
    HAL_Delay(2000);
    TM_LCD_Init();
    HAL_Delay(2000);
@@ -218,8 +217,7 @@ int main(void) {
    // char UART_Aux[32] = {0};
    // uint8_t i = 97;
    /* USER CODE END 2 */
-   anschluss = 1;
-   at_schrittmotor_param(2, 2);
+   //at_schrittmotor_param(2, 2);
    /* Infinite loop */
    /* USER CODE BEGIN WHILE */
    while (1) {
@@ -781,26 +779,25 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
        */
       UART_Buffer[len] = UART1_Data;
       len++;
-
       /*
        * weil CR immer ein seltsames zeichen ausgibt und beim LCD Display
        * nicht gebraucht wird, ist die ausgabe hier dazwischen
        * Etwas verwirrend, weil Newline mit CR getausch wird
-       * Das LCD hat halt keinen sauberen 0x00 abschluss...
        */
       if (UART1_Data == 0x0D) {
-
-    	 /* fuer die lcd ausgabe braucht man ein \n */
+         /* fuer die lcd ausgabe braucht man ein \n */
          UART_Buffer[len - 1] = 0x0A;
+         UART_Buffer[len] = 0x00;
+
          at_lcd_debug(&UART_Buffer);
 
-         /* um einen sauberen string an den parser zu schicken entferne ich das \n */
+         /* fuer den parser --> nur darstellbare Zeichen */
          UART_Buffer[len - 1] = 0x00;
          at_uart_interpreter(&UART_Buffer);
 
-
 #ifdef UART_DEBUG
-         UART_Buffer[len - 1] = 0x0A;
+         UART_Buffer[len-1] = 0x0A;
+         len++;
          UART_Buffer[len] = 0x0D;
          len++;
          UART_Buffer[len] = 0x00;

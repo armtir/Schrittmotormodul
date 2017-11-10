@@ -12,6 +12,11 @@
 
 dSPIN_RegsStruct_TypeDef dSPIN_RegsStruct;
 
+/*
+ ******************************************************************************
+ * Sende Daten an jeweiliges Modul
+ ******************************************************************************
+ */
 int at_dSPIN_Write_Byte(uint8_t byte) {
    uint8_t antwort = 0;
 
@@ -69,14 +74,19 @@ int at_dSPIN_Write_Byte(uint8_t byte) {
    }
 }
 
+/*
+ ******************************************************************************
+ * Schrittmotor Initialisierung mit Connection Check
+ ******************************************************************************
+ */
 uint8_t at_schrittmotor_init(void) {
    uint8_t aktive_module = 0;
    /* Zuerst ein Reset aller Module */
    for (uint8_t i = 8; i >= 1; i--) {
       /*ohne diese Verzögerung funktioniert der Treiber nicht korrekt*/
-	      HAL_Delay(100);
+      HAL_Delay(300);
 
-	   anschluss = i;
+      anschluss = i;
       dSPIN_Reset_Device();
       /*
        * pr�ft ob irgendetwas zur�ck kommt, wenn ja dann ist das modul
@@ -84,20 +94,15 @@ uint8_t at_schrittmotor_init(void) {
        * auszugeben, welche module aktiv sind. Es wird immer +1 dazugez�hlt und
        * um ein bit nach links geschoben
        */
-      HAL_Delay(100);
-
+      HAL_Delay(300);
       if (dSPIN_Get_Status() != 0) {
          aktive_module += 1;
       }
 
-      if (i != 1 ) {
-      aktive_module = aktive_module << 1;
+      if (i != 1) {
+         aktive_module = aktive_module << 1;
       }
    }
-   // Hier wrid der anschluss geschrieben. Das ist eine ausnahme
-   // sonst immer nur in den uart funktionen
-   // Das passiert aber noch in der initialisierungspahse
-   anschluss = 0;
    return aktive_module;
 }
 
@@ -107,20 +112,16 @@ uint8_t at_schrittmotor_init(void) {
  ******************************************************************************
  */
 
-int at_schrittmotor_param(uint8_t rw, uint8_t vordefiniert) {
-   if (rw == LESEN) {
+int at_schrittmotor_param(uint8_t option) {
+   if (option == LESEN) {
       at_schrittmotor_get_param(&dSPIN_RegsStruct);
       // jetzt muss es noch am uart oder sonst wo ausgegeben werden
-   } else if (rw == SCHREIBEN) {
+   } else if (option == SCHREIBEN) {
       // hier m�ssen jetzt diese register gesperichert werden...
-   }
-
-   else if (vordefiniert == 1) {
+   } else if (option == 99) {
       L3518_init(&dSPIN_RegsStruct);
       dSPIN_Registers_Set(&dSPIN_RegsStruct);
-   }
-
-   else if (vordefiniert == 2) {
+   } else if (option == 98) {
       LSP1518_init(&dSPIN_RegsStruct);
       dSPIN_Registers_Set(&dSPIN_RegsStruct);
    }
@@ -150,8 +151,8 @@ void L3518_init(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct) {
    dSPIN_RegsStruct->T_FAST = dSPIN_TOFF_FAST_20us;
    dSPIN_RegsStruct->TON_MIN = Tmin_Time_to_Par(20);
    dSPIN_RegsStruct->TOFF_MIN = Tmin_Time_to_Par(20);
-   // dSPIN_RegsStruct->OCD_TH    = dSPIN_OCD_TH_375mA;
-   dSPIN_RegsStruct->OCD_TH = dSPIN_OCD_TH_1125mA;
+   dSPIN_RegsStruct->OCD_TH    = dSPIN_OCD_TH_375mA;
+  // dSPIN_RegsStruct->OCD_TH = dSPIN_OCD_TH_1125mA;
    dSPIN_RegsStruct->STEP_MODE = 0x08 | dSPIN_STEP_SEL_1_16;
    dSPIN_RegsStruct->ALARM_EN = 0xFF;
    dSPIN_RegsStruct->CONFIG = 0x2E88;
@@ -178,8 +179,8 @@ void LSP1518_init(dSPIN_RegsStruct_TypeDef* dSPIN_RegsStruct) {
    dSPIN_RegsStruct->T_FAST = dSPIN_TOFF_FAST_10us;
    dSPIN_RegsStruct->TON_MIN = Tmin_Time_to_Par(20);
    dSPIN_RegsStruct->TOFF_MIN = Tmin_Time_to_Par(20);
-   // dSPIN_RegsStruct->OCD_TH    = dSPIN_OCD_TH_375mA;
-   dSPIN_RegsStruct->OCD_TH = dSPIN_OCD_TH_750mA;
+   dSPIN_RegsStruct->OCD_TH    = dSPIN_OCD_TH_375mA;
+  // dSPIN_RegsStruct->OCD_TH = dSPIN_OCD_TH_750mA;
    dSPIN_RegsStruct->STEP_MODE = 0x08 | dSPIN_STEP_SEL_1_2;
    dSPIN_RegsStruct->ALARM_EN = 0xFF;
    dSPIN_RegsStruct->CONFIG = 0x2E88;
@@ -270,7 +271,11 @@ void at_schrittmotor_step(void) {
 
 void at_schrittmotor_test(void) { dSPIN_Run(FWD, Speed_Steps_to_Par(5)); }
 
-void at_schrittmotor_stop(void) { dSPIN_Soft_Stop(); }
+void at_schrittmotor_stop(void) {
+
+	//dSPIN_Soft_Stop();
+	dSPIN_Soft_HiZ();
+}
 
 void at_schrittmotor_sync(void) {
    dSPIN_Run(FWD, Speed_Steps_to_Par(50));
