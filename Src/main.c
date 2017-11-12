@@ -164,8 +164,9 @@ int main(void) {
    MX_I2C3_Init();
 
    /* USER CODE BEGIN 2 */
-   /* Setze alle CS Signale auf Inaktiv
-    *
+      
+   /*
+    * Setze alle CS Signale auf Inaktiv
     * Könnte man auch mit Enumeration lösen...
     * Hier aber wurst
     */
@@ -186,14 +187,20 @@ int main(void) {
    HAL_Delay(100);
    at_lcd_init(&LCD_Config);
    at_lcd_page_0();
+   HAL_Delay(3000);
+
+   TM_LCD_Init();
+    TM_LCD_SetXY(0, 0);
+    TM_LCD_SetFont(&TM_Font_7x10);
+
    LCD_INFO("Initialisierung");
    HAL_Delay(1000);
    aktive_ports = at_schrittmotor_init();
    HAL_Delay(100);
    at_expander_init();
    HAL_Delay(100);
-   LCD_INFO("abgeschlossen");
-   LCD_INFO("Angeschlossene Module:")
+   LCD_INFO("Initialisierung abgeschlossen");
+   LCD_INFO("Aktive Module:")
    LCD_INFO(BYTE_TO_BINARY_PATTERN8, BYTE_TO_BINARY8(aktive_ports));
    HAL_Delay(2000);
    TM_LCD_Init();
@@ -211,22 +218,10 @@ int main(void) {
     * Laut stm32f4xx_hal.c benutzt HAL_Delay die Systick Funktion.
     */
 
-   // MÜLL glaube ich...
-   // at_lcd_start();
-   // at_lcd_page_1(0, 0);
-   // char UART_Aux[32] = {0};
-   // uint8_t i = 97;
-   /* USER CODE END 2 */
-   //at_schrittmotor_param(2, 2);
-   /* Infinite loop */
    /* USER CODE BEGIN WHILE */
    while (1) {
       /* USER CODE END WHILE */
       /* USER CODE BEGIN 3 */
-      // UART_Aux[0] = i;
-      // at_lcd_debug(&UART_Aux);
-      // i++;
-      // HAL_Delay(1000);
    }
    /* USER CODE END 3 */
 }
@@ -796,7 +791,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef* huart) {
          at_uart_interpreter(&UART_Buffer);
 
 #ifdef UART_DEBUG
-         UART_Buffer[len-1] = 0x0A;
+         UART_Buffer[len - 1] = 0x0A;
          len++;
          UART_Buffer[len] = 0x0D;
          len++;

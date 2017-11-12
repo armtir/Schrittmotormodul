@@ -75,11 +75,10 @@ void at_lcd_page_0(void) {
    TM_LCD_SetXY(53, 180);
    TM_LCD_Puts("c1410535039");
 
-   TM_LCD_SetXY(0, 180);
-   LCD_INFO("\n\n");
-   TM_LCD_SetFont(&TM_Font_7x10);
+  // TM_LCD_SetXY(0, 180);
+  // LCD_INFO("\n\n");
+  // TM_LCD_SetFont(&TM_Font_7x10);
 }
-
 
 void at_lcd_page_1(uint16_t modul, uint16_t mode) {
    aktuelle_seite = 1;
@@ -88,10 +87,8 @@ void at_lcd_page_1(uint16_t modul, uint16_t mode) {
 
    for (int i = 0; i < 4; i++) {
       TM_LCD_SetXY(0, 0);
-      TM_LCD_DrawFilledRectangle(10, (20 + (50 * i)), 15, 30,
-LCD_COLOR_BLACK);
-      TM_LCD_DrawFilledRectangle(215, (20 + (50 * i)), 15, 30,
-LCD_COLOR_BLACK);
+      TM_LCD_DrawFilledRectangle(10, (20 + (50 * i)), 15, 30, LCD_COLOR_BLACK);
+      TM_LCD_DrawFilledRectangle(215, (20 + (50 * i)), 15, 30, LCD_COLOR_BLACK);
    }
 
    TM_LCD_DrawFilledRectangle(10, 20, 15, 30, LCD_COLOR_GRAY);
@@ -166,7 +163,7 @@ void at_lcd_state(TM_STMPE811_t* LCD_Config) {
       }
       case 2: {  // sync halb
          if (aktuelle_seite == 1) {
-            at_schrittmotor_sync();
+          //  at_schrittmotor_sync();
          } else if (aktuelle_seite == 2) {
             // at_schritt_konfig(1);
          }
@@ -274,36 +271,36 @@ void at_debug(TM_STMPE811_t* LCD_Config) {
    TM_LCD_Fill(LCD_COLOR_WHITE);
 
    switch (i) {
+      /* UART debugfunktion aktivieren */
       case 1: {
-         /*UART debugfunktion aktivieren*/
          aktuelle_seite = 1;
-         //  at_schrittmotor_print_data(101);
-         //  for (int i = 0; i < 100; i++) {
-         //     LCD_INFO("Zeile: %d", i);
-      }
+      } break;
 
-   break;
-   case 2: {
-      at_schrittmotor_print_data(102);
-   } break;
-   case 3: {
-      at_schrittmotor_print_data(1);
-   } break;
-   case 4:
-      // LCD_INFO("Status:    "BYTE_TO_BINARY_PATTERN,
-      // BYTE_TO_BINARY(dSPIN_Get_Status()));
-      at_stck(0x10);
-      LCD_INFO("stck!");
+      /* Standardparemeterausgabe großer Motor */
+      case 2: {
+         at_schrittmotor_print_data(CONFIG_1);
+      } break;
 
-      test1 = TM_LCD_GetCurrentX;
-      test2 = TM_LCD_GetCurrentY;
-      LCD_INFO("y=%d x=%d", test1, test2);
+      /* Standardparameterausgabe kleiner Motor */
+      case 3: {
+         at_schrittmotor_print_data(CONFIG_2);
+      } break;
 
-      break;
-   default:
-      break;}
+      /* Parameterausgabe aktueller Anschluss */
+      case 4: {
+         at_schrittmotor_print_data(1);
+      } break;
+
+      /* Statusabfrage aktueller Anschluss */
+      case 5:
+         LCD_INFO("Status:    " BYTE_TO_BINARY_PATTERN,
+                  BYTE_TO_BINARY(dSPIN_Get_Status()));
+         break;
+
+      default:
+         break;
+   }
 }
-
 
 /*
  *******************************************************************************

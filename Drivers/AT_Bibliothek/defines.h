@@ -22,6 +22,14 @@
  *
  ******************************************************************************
  */
+#ifndef DEFINES_FILE
+#define DEFINES_FILE
+
+/*
+ *******************************************************************************
+ * Übersicht
+ *******************************************************************************
+ */
 
 /*die n�chsten schritte:
  einzelne module(files und treiber) abschlie�en
@@ -42,9 +50,6 @@
 
  */
 
-#ifndef DEFINES_FILE
-#define DEFINES_FILE
-
 /*
  * Übersicht:
  * 1.TM Makros
@@ -53,6 +58,13 @@
  *
  * TABS beim Editor bitte auf 4 setzen!!!!!
  */
+
+/*
+ *******************************************************************************
+ * Defines
+ *******************************************************************************
+ */
+
 #define ENABLE_LCD_INFO
 //#define CLK16_enable
 
@@ -63,12 +75,20 @@
 #define LESEN 0
 #define SCHREIBEN 1
 #define FORWARD 1
+#define CONFIG_1 99
+#define CONFIG_2 98
 #define REVERSE 0
 /* Der Buffer muss nur so groß sein, dass sich ein Befehl ausgeht ?34? */
 #define MAX_BUFFER 50
 /* 32 Zeilen, 34 Spalten bei einer Schrift von 7x10 */
 #define MAX_ZEILE 32
 #define MAX_SPALTE 34
+
+/*
+ *******************************************************************************
+ * Makros
+ *******************************************************************************
+ */
 
 /* Zu Debugzwecken eingebaut */
 #ifdef ENABLE_LCD_INFO
@@ -80,6 +100,16 @@ char str[30];
       TM_LCD_Puts("\n");         \
    }
 #endif
+
+
+#define UART_INFO(...)            \
+   {                             \
+      sprintf(str, __VA_ARGS__); \
+      TM_USART_Puts(USART1, str);          \
+      TM_USART_Puts(USART1, "\n\r");         \
+   }
+
+
 
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)                                     \
@@ -98,6 +128,9 @@ char str[30];
        (byte & 0x20 ? '1' : '0'), (byte & 0x10 ? '1' : '0'), \
        (byte & 0x08 ? '1' : '0'), (byte & 0x04 ? '1' : '0'), \
        (byte & 0x02 ? '1' : '0'), (byte & 0x01 ? '1' : '0')
+
+
+
 
 /****************************************************************************
  * Makros f�r die TM Bibliothek
@@ -132,11 +165,11 @@ char str[30];
 #define TM_USART1_STOP_BITS USART_STOPBITS_1
 #define TM_USART1_WORD_LENGTH UART_WORDLENGTH_8B
 
-/******************************************************************************
+/*
+ *******************************************************************************
  * Pinout der benutzten GPIOS und eigene Makros
- *
  * siehe CubeMX
- ******************************************************************************
+ *******************************************************************************
  */
 
 /*
