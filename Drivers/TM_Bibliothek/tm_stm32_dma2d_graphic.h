@@ -87,7 +87,8 @@ extern "C" {
  */
  
 #include "stm32fxxx_hal.h"
-#include "defines.h"
+#include "at_defines.h"
+
 
 /**
  * @defgroup TM_DMA2D_GRAPHIC_Macros

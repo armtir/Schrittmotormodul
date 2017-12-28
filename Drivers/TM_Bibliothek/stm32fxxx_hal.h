@@ -148,7 +148,7 @@ extern "C" {
  */
 
 /* Include project config file */
-#include "defines.h"
+#include "at_defines.h"
 
 /* Check if HAL drivers enabled */
 #ifndef USE_HAL_DRIVER
@@ -198,7 +198,7 @@ extern "C" {
 #endif
 
 /* Init main libraries used everywhere */
-#include "defines.h"
+#include "at_defines.h"
 #include "tm_stm32_rcc.h"
 #include "tm_stm32_gpio.h"
 #include "stm32f4xx_hal_i2c.h"

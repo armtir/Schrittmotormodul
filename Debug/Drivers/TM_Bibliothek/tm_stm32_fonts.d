@@ -1,7 +1,7 @@
 Drivers/TM_Bibliothek/tm_stm32_fonts.o: \
  ../Drivers/TM_Bibliothek/tm_stm32_fonts.c \
  ../Drivers/TM_Bibliothek/tm_stm32_fonts.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h \
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_defines.h \
  ../Drivers/TM_Bibliothek/stm32fxxx_hal.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f429xx.h \
@@ -42,7 +42,7 @@ Drivers/TM_Bibliothek/tm_stm32_fonts.o: \
 
 ../Drivers/TM_Bibliothek/tm_stm32_fonts.h:
 
-/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h:
+/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_defines.h:
 
 ../Drivers/TM_Bibliothek/stm32fxxx_hal.h:
 

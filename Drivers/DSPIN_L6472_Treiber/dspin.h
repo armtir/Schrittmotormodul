@@ -24,7 +24,7 @@
 #define DSPIN_FILE
 
 /* Includes ------------------------------------------------------------------*/
-#include "defines.h"
+#include "at_defines.h"
 #include "dspin_config.h"
 #include "stm32f4xx_hal.h"
 

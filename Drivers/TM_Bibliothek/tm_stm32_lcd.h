@@ -114,7 +114,7 @@ extern "C" {
  */
 
 #include "stm32fxxx_hal.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "tm_stm32_sdram.h"
 #include "tm_stm32_gpio.h"
 #include "tm_stm32_fonts.h"

@@ -1,5 +1,16 @@
+/*
+ *******************************************************************************
+ * File:    at_schrittmotor.c
+ * Author:  Armin Tirala
+ * Version: V4.1
+ * Date:    28.12.2017
+ * IDE:     Eclipse Neon.3
+ * Note:
+ *******************************************************************************
+ */
+
 #include "at_schrittmotor.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "dspin.h"
 #include "stdint.h"
 #include "stm32f4xx_hal.h"
@@ -17,7 +28,7 @@ int at_dSPIN_Write_Byte(uint8_t byte) {
    uint8_t seriesum = 0;
 
    /* Multicast SPI Befehl für Ausgabe ohne delay */
-   for (int i = 0; i <= 8; i++) {
+   for (uint8_t i = 0; i <= 8; i++) {
       seriesum += serie[i];
    }
 
@@ -430,47 +441,47 @@ void at_schrittmotor_run(uint8_t FWDREV, uint8_t speed) {
 }
 
 /* Stop */
-void at_schrittmotor_hard_stop(void) { dSPIN_Hard_Stop(); }
-void at_schrittmotor_soft_stop(void) { dSPIN_Soft_Stop(); }
+void at_schrittmotor_stop_hard(void) { dSPIN_Hard_Stop(); }
+void at_schrittmotor_stop_soft(void) { dSPIN_Soft_Stop(); }
 
 /* Off */
-void at_schrittmotor_hard_off(void) { dSPIN_Hard_HiZ(); }
-void at_schrittmotor_soft_off(void) { dSPIN_Soft_HiZ(); }
+void at_schrittmotor_off_hard(void) { dSPIN_Hard_HiZ(); }
+void at_schrittmotor_off_soft(void) { dSPIN_Soft_HiZ(); }
 
 /* Step */
 void at_schrittmotor_step(uint8_t FWDREV) {
    switch (anschluss) {
       case (1):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(4);
+         at_expander_stck(4);
          break;
       case (2):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(5);
+         at_expander_stck(5);
          break;
       case (3):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(6);
+         at_expander_stck(6);
          break;
       case (4):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(7);
+         at_expander_stck(7);
          break;
       case (5):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(0);
+         at_expander_stck(0);
          break;
       case (6):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(1);
+         at_expander_stck(1);
          break;
       case (7):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(2);
+         at_expander_stck(2);
          break;
       case (8):
          dSPIN_Step_Clock(FWDREV);
-         at_stck(3);
+         at_expander_stck(3);
          break;
       default:
          break;
@@ -481,19 +492,29 @@ void at_schrittmotor_move(uint8_t FWDREV, uint32_t n_step) {
    dSPIN_Move(FWDREV, n_step);
 }
 
-void at_schrittmotor_goto(uint32_t abs_pos) { dSPIN_Go_To(uint32_t abs_pos); }
-
-void at_schrittmotor_gotodir(uint8_t FWDREV, uint32_t abs_pos) {
-   dSPIN_Go_To(FWDREV, abs_pos);
+void at_schrittmotor_goto(uint32_t abs_pos) {
+	dSPIN_Go_To(abs_pos);
 }
 
-void at_schrittmotor_gohome(void) { dSPIN_Go_Home(void); }
+void at_schrittmotor_gotodir(uint8_t FWDREV, uint32_t abs_pos) {
+   dSPIN_Go_To_Dir(FWDREV, abs_pos);
+}
 
-void at_schrittmotor_gomark(void) { dSPIN_Go_Mark(void); }
+void at_schrittmotor_gohome(void) {
+	dSPIN_Go_Home();
+}
 
-void at_schrittmotor_resetpos(void) { dSPIN_Reset_Pos(void); }
+void at_schrittmotor_gomark(void) {
+	dSPIN_Go_Mark();
+}
 
-void at_schrittmotor_reset(void) { dSPIN_Reset_Device(void); }
+void at_schrittmotor_resetpos(void) {
+	dSPIN_Reset_Pos();
+}
+
+void at_schrittmotor_reset(void) {
+	dSPIN_Reset_Device();
+}
 
 void at_schrittmotor_getstatus(void) {
    UART_INFO("Status:    " BYTE_TO_BINARY_PATTERN,

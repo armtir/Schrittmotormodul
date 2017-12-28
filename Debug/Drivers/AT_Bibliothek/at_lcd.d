@@ -1,7 +1,7 @@
 Drivers/AT_Bibliothek/at_lcd.o: ../Drivers/AT_Bibliothek/at_lcd.c \
- ../Drivers/AT_Bibliothek/at_lcd.h ../Drivers/AT_Bibliothek/defines.h \
+ ../Drivers/AT_Bibliothek/at_lcd.h ../Drivers/AT_Bibliothek/at_defines.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32f4_stmpe811.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h \
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_defines.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_i2c.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/stm32fxxx_hal.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h \
@@ -53,11 +53,11 @@ Drivers/AT_Bibliothek/at_lcd.o: ../Drivers/AT_Bibliothek/at_lcd.c \
 
 ../Drivers/AT_Bibliothek/at_lcd.h:
 
-../Drivers/AT_Bibliothek/defines.h:
+../Drivers/AT_Bibliothek/at_defines.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32f4_stmpe811.h:
 
-/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h:
+/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_defines.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/TM_Bibliothek/tm_stm32_i2c.h:
 

@@ -204,7 +204,7 @@ USART8       |PC2    PC3     |PC8    PC9     |PD13   PD14
 #include "stm32fxxx_hal.h"
 #include "stm32f4xx_hal_usart.h"
 #include "attributes.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "tm_stm32_gpio.h"
 #include "tm_stm32_buffer.h"
 

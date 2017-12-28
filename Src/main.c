@@ -97,7 +97,7 @@ TM_STMPE811_t LCD_Config;
  */
 uint8_t anschluss = 0;
 uint8_t aktive_ports = 0;
-uint8_t serie[9] = {0, 0, 0, 0, 0, 0, 0, 0,0};
+uint8_t serie[9] = {0, 0, 0, 0, 0, 0, 0, 0, 0};
 
 uint8_t INIT_DONE = FALSE;
 
@@ -656,8 +656,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     * Er kann zum Debugen o.ä. eingesetzt werden.
     */
    if (GPIO_Pin == GPIO_PIN_0 && INIT_DONE) {
-      // at_expander_stck();
-      at_debug(&LCD_Config);
+      at_lcd_seite(&LCD_Config);
       HAL_GPIO_TogglePin(GPIOG, GPIO_PIN_13);
    }
 
@@ -680,10 +679,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
                BYTE_TO_BINARY(flag_input));
       flag[8] = 'F';
       flag[9] = 0x00;
-     // if (aktuelle_seite == 1) {
-     //    TM_LCD_SetXY(77, 310);
-      //   TM_LCD_Puts(flag);
-    //  }
+
       /*
        * Damit der String sauber an den UART übergeben wird, wird CR NL und NULL
        * eingefügt
@@ -711,10 +707,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
                BYTE_TO_BINARY(busy_input));
       busy[8] = 'B';
       busy[9] = 0x00;
-    //  if (aktuelle_seite == 1) {
-      //   TM_LCD_SetXY(0, 310);
-     //    TM_LCD_Puts(busy);
-     // }
+
 
       busy[9] = 0x0A;
       busy[10] = 0x0D;

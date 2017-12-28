@@ -89,7 +89,7 @@ I2C4   |PD12  PD13   |PF1   PF0    |PF14  PF15   |PH11  PH12
 \endverbatim
  */
 #include "stm32fxxx_hal.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "attributes.h"
 #include "tm_stm32_gpio.h"
 

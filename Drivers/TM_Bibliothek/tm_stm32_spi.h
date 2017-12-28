@@ -118,7 +118,7 @@ SPI6    |PG14   PG12    PG13    |
  */
 
 #include "stm32fxxx_hal.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "attributes.h"
 #include "tm_stm32_gpio.h"
 

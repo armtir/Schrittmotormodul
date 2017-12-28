@@ -1,9 +1,9 @@
 Drivers/AT_Bibliothek/at_schrittmotor.o: \
  ../Drivers/AT_Bibliothek/at_schrittmotor.c \
  ../Drivers/AT_Bibliothek/at_schrittmotor.h \
- ../Drivers/AT_Bibliothek/defines.h \
+ ../Drivers/AT_Bibliothek/at_defines.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin.h \
- /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h \
+ /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_defines.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin_config.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h \
  /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Inc/stm32f4xx_hal_conf.h \
@@ -48,11 +48,11 @@ Drivers/AT_Bibliothek/at_schrittmotor.o: \
 
 ../Drivers/AT_Bibliothek/at_schrittmotor.h:
 
-../Drivers/AT_Bibliothek/defines.h:
+../Drivers/AT_Bibliothek/at_defines.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin.h:
 
-/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/defines.h:
+/mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/AT_Bibliothek/at_defines.h:
 
 /mnt/Speicher/STM32_IDE/STM32_Projekte/Schrittmotor_V4/Drivers/DSPIN_L6472_Treiber/dspin_config.h:
 

@@ -1,24 +1,23 @@
-/**
- ******************************************************************************
- * @file    at_uart.h
- * @author  Armin Tirala
- * @version V1.0
- * @date    16.05.2017
- * @brief   Schrittmotorsteuerung
- * @note    Defines zu USART
- * headerfile braucht nicht ver�ndert werden.
- ******************************************************************************
+/*
+ *******************************************************************************
+ * File:    at_uart.h
+ * Author:  Armin Tirala
+ * Version: V4.1
+ * Date:    28.12.2017
+ * IDE:     Eclipse Neon.3
+ * Note:
+ * Defines zu USART
+ * headerfile braucht nicht veraendert werden.
+ *******************************************************************************
  */
 
-#ifndef _USE_LCD_H
-#define _USE_LCD_H
+#ifndef AT_UART_H
+#define AT_UART_H
 
-#include "defines.h"
+#include "at_defines.h"
 #include "stm32f4xx_hal.h"
 
 extern uint8_t anschluss;
-
-extern void uart_test(void);
 extern int at_uart_interpreter(const char* UART_Buffer);
 
 #endif

@@ -1,11 +1,17 @@
 /*
  *******************************************************************************
- * Includes
+ * File:    at_lcd.c
+ * Author:  Armin Tirala
+ * Version: V4.1
+ * Date:    28.12.2017
+ * IDE:     Eclipse Neon.3
+ * Note:
  *******************************************************************************
  */
+
 #include "at_lcd.h"
 #include "at_schrittmotor.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "stdint.h"
 #include "stm32f4xx_hal.h"
 #include "tm_stm32_lcd.h"
@@ -202,7 +208,7 @@ void at_lcd_state(TM_STMPE811_t* LCD_Config) {
          for (i = 1; i <= 8; i++) {
             if (serie[i] > 0) {
                anschluss = i;
-               at_schrittmotor_off();
+               at_schrittmotor_off_soft();
             }
          }
       } else if (aktuelle_seite == 1) {
@@ -544,7 +550,7 @@ void at_lcd_test(TM_STMPE811_t* LCD_Config) {
  * irgendwann ist sie geschichte...
  */
 
-void at_debug(TM_STMPE811_t* LCD_Config) {
+void at_lcd_seite(TM_STMPE811_t* LCD_Config) {
    static uint8_t i = 0;
    i++;
    if (i >= MAX_SEITE + 1) i = 0;

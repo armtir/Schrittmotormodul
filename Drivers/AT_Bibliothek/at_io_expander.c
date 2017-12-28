@@ -1,5 +1,16 @@
+/*
+ *******************************************************************************
+ * File:    at_io_expander.c
+ * Author:  Armin Tirala
+ * Version: V4.1
+ * Date:    28.12.2017
+ * IDE:     Eclipse Neon.3
+ * Note:
+ *******************************************************************************
+ */
+
 #include "at_io_expander.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "stm32fxxx_hal.h"
 #include "tm_stm32_spi.h"
 
@@ -109,7 +120,7 @@ int at_expander_init(void) {
  * werden, daher die Abfrage...
  * Ist aber noch nicht gescheit gel�st, da die CLK jetzt via #def aktiviert ist
  */
-void at_reset(void) {
+void at_expander_reset(void) {
    at_expander_senddata(ExpanderB, BGPIO, 0x06);
    HAL_Delay(100);
 #ifdef CLK16_enable
@@ -130,10 +141,9 @@ void at_expander_status(void) {
 
 /*
  * Einfacher TEST ob man damit StepClock bedienen kann...
- * Wird gek�belt
  * Die logisch High Dauer ist ca 5us (gemessen mit Logik Analysator)
  */
-void at_stck(uint8_t port) {
+void at_expander_stck(uint8_t port) {
    at_expander_senddata(ExpanderA, BGPIO, port);
    at_expander_senddata(ExpanderA, BGPIO, port);
 }

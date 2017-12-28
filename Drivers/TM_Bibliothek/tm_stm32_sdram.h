@@ -168,7 +168,7 @@ PC3  <-> FMC_SDCKE0 | PD0  <-> FMC_D2   | PE0  <-> FMC_NBL0  | PF0  <-> FMC_A0  
 \endverbatim
  */
 #include "stm32fxxx_hal.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "attributes.h"
 #include "tm_stm32_gpio.h"
 

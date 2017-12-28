@@ -75,7 +75,7 @@ extern "C" {
 \endverbatim
  */
 #include "stm32fxxx_hal.h"
-#include "defines.h"
+#include "at_defines.h"
 
 /**
  * @defgroup TM_RCC_Macros

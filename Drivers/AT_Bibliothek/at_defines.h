@@ -1,63 +1,28 @@
-/**
- ******************************************************************************
- * @file    defines.h
- * @author  Armin Tirala
- * @email   a.tirala@gmail.com
- * @version V4.0
- * @date    06.09.2017
- * @ide     Keil uVision V5.23.0.0
- * @brief   Konfigurations-Headerfile
- * @note
+/*
+ *******************************************************************************
+ * File:    at_defines.h
+ * Author:  Armin Tirala
+ * Version: V4.1
+ * Date:    28.12.2017
+ * IDE:     Eclipse Neon.3
+ * Note:
+ * Konfigurations-Headerfile
  * Alle allgemeinen Controllerspezifischen Konfigurationen sind hier definiert
  * Manche aus CubeMX erstellten Konfig. werden hier ueberschrieben!
  * Der Grund ist, dass CubeMX sehr praktisch ist aber ein paar Einstellungen
  * von Hand vorgenommen werden mussten.
  * In diesem File k�nnen �nderungen vorgenommen werden!
  * Manuelle Parametrierung, �berschreibt die Cube Einstellungen
- * �nderungen der GPIO Ports f�r Chipselect HIER!
+ * Aenderungen der GPIO Ports f�r Chipselect HIER!
  * Grund: die Bibliotheken TM und DSPIN nehmen diese Makrodefinitionen
  * her. Diese alle zu aendern ist nicht sinnvoll, weiters sind manche
  * Parameter mit einer Funktionbeschrieben --> das w�rde in Cube nicht
  * funktionieren
- *
- ******************************************************************************
- */
-#ifndef DEFINES_FILE
-#define DEFINES_FILE
-
-/*
- *******************************************************************************
- * Übersicht
  *******************************************************************************
  */
 
-/*die n�chsten schritte:
- einzelne module(files und treiber) abschlie�en
- dann aufbauend auf diesen weitere funktionen einbauen
- zuerst soll aber die basis funktionieren!!!
-
- 1. test seite in lcd einbauen und funktionen zum debuggen einbauen
- 2. test der einzelnen signale: interrupt, gpio
- 3. test der treiber
- 4. modifikationen der treiber
- */
-
-/*
- also das ganze ist etwas kompliziert. Der Expander Treiber ist soweit
- einsetzbar, Der Schrittmotor-Treiber noch nicht.
-
-
-
- */
-
-/*
- * Übersicht:
- * 1.TM Makros
- * 2.STM32 Konfiguration
- * 3.DSPIN Konfiguration verbesserungsw�rdig
- *
- * TABS beim Editor bitte auf 4 setzen!!!!!
- */
+#ifndef AT_DEFINES_H
+#define AT_DEFINES_H
 
 /*
  *******************************************************************************
@@ -107,15 +72,12 @@ char str[30];
    }
 #endif
 
-
-#define UART_INFO(...)            \
-   {                             \
-      sprintf(str, __VA_ARGS__); \
-      TM_USART_Puts(USART1, str);          \
-      TM_USART_Puts(USART1, "\n\r");         \
+#define UART_INFO(...)               \
+   {                                 \
+      sprintf(str, __VA_ARGS__);     \
+      TM_USART_Puts(USART1, str);    \
+      TM_USART_Puts(USART1, "\n\r"); \
    }
-
-
 
 #define BYTE_TO_BINARY_PATTERN "%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c%c"
 #define BYTE_TO_BINARY(byte)                                     \
@@ -135,15 +97,13 @@ char str[30];
        (byte & 0x08 ? '1' : '0'), (byte & 0x04 ? '1' : '0'), \
        (byte & 0x02 ? '1' : '0'), (byte & 0x01 ? '1' : '0')
 
-
-
-
-/****************************************************************************
- * Makros f�r die TM Bibliothek
+/*
+ *******************************************************************************
+ * Defines fuer die TM Bibliothek
  *
  * Wie oben angesprochen werden zB die SPI Paramterierungen
  * durch ein weiteres Makro definiert
- ******************************************************************************
+ *******************************************************************************
  */
 #define STM32F4xx
 #define STM32F429_DISCOVERY
@@ -181,28 +141,28 @@ char str[30];
 /*
  * Pinning  06092017
  * Linke Stiftleiste
- * Pin		Port	Bezeichnung	Funktion
- * 11		PE6		nCS_1		OUT
- * 12		PC13	nCS_2		OUT
- * 13		PE4		nUSB_Mode	INT
- * 14		PE5		nCS_0		OUT
- * 15		PE2		INT_A		INT
- * 16		PE3		INT_B		INT
- * 28		PB3		CLK			OUT
- * 40		PD2		nCS_3		OUT
- * 43		PC12	MOSI		OUT
- * 44		PC11	MISO		IN
- * 51		PA10	TXD			IN
- * 52		PA9		RXD			OUT
- * 55		PC8		nCS_4		OUT
+ * Pin   Port     Bezeichnung Funktion
+ * 11    PE6      nCS_1    OUT
+ * 12    PC13     nCS_2    OUT
+ * 13    PE4      nUSB_Mode INT
+ * 14    PE5      nCS_0    OUT
+ * 15    PE2      INT_A    INT
+ * 16    PE3      INT_B    INT
+ * 28    PB3      CLK      OUT
+ * 40    PD2      nCS_3    OUT
+ * 43    PC12     MOSI     OUT
+ * 44    PC11     MISO     IN
+ * 51    PA10     TXD      IN
+ * 52    PA9      RXD      OUT
+ * 55    PC8      nCS_4    OUT
 
  * Rechte Stiftleiste
- * Pin		Port	Bezeichnung	Funktion
- * 12		NRST
- * 15		PC3		nCS_8		OUT
- * 21		PA5		nCS_7		OUT
- * 61		PG3		nCS_6		OUT
- * 62		PG2		nCS_5		OUT
+ * Pin   Port  Bezeichnung Funktion
+ * 12    NRST
+ * 15    PC3      nCS_8    OUT
+ * 21    PA5      nCS_7    OUT
+ * 61    PG3      nCS_6    OUT
+ * 62    PG2      nCS_5    OUT
  */
 
 /*
@@ -273,67 +233,11 @@ char str[30];
 #define RXBUF_MSK (RXBUF_LEN - 1)
 #define TXBUF_MSK (TXBUF_LEN - 1)
 
-/******************************************************************************
- * Parameter f�r DSPIN Bibliothek
- *
- * Grundeinstellungen f�r DSPIN.o f�r STM32
- * muss noch aussortiert werden...
- * es wird darauf geachtet, den treiber dspin so wenig wie m�glich zu
- * ver�ndern
- ******************************************************************************
+/*******************************************************************************
+ * Parameter fuer DSPIN Bibliothek
+ *******************************************************************************
  */
-
-//#define MODUL_0 (1)
-/* DSPIN Parameter */
-// Aus dspin (pre_include.h) raus kopiert 8 MHZ
-// wird aber nirgends gebraucht...
-//#define HSE_VALUE    ((uint32_t)8000000) /*!< Value of the External oscillator
-// in Hz */  im dma.h empfohlen anzugeben...  Disable DMA2 Stream3 IRQ handler
-// for
-// TM DMA library
 #define DMA2_STREAM3_DISABLE_IRQHANDLER
-
-// For all other DMAs and STREAMS, syntax is similar:
 #define DMAx_STREAMy_DISABLE_IRQHANDLER
-// Where X is 1 or 2 for DMA1 or DMA2 and y is 0 to 7 for STREAM0 to STREAM7 on
-// specific DMA
 
-/* RCC Parameter */
-/* I've added these defines in options for target in Keil uVision for each
- * target different settings */
-//#define RCC_OSCILLATORTYPE    RCC_OSCILLATORTYPE_HSE /*!< Used to select
-// system oscillator type */ #define RCC_PLLM              8
-///*!< Used for PLL M parameter */ #define RCC_PLLN              360
-///*!< Used for PLL N parameter */ #define RCC_PLLP              2
-///*!< Used for PLL P parameter */ #define RCC_PLLQ              7
-///*!< Used for PLL Q parameter */ #define RCC_PLLR              10
-///*!< Used for PLL R parameter, available on STM32F446xx */ #ifdef MODUL_0
-////algemeine einstellung deshalb modul 0 	#define dSPIN_nSS_Pin
-// GPIO_Pin_4 	#define dSPIN_nSS_Port		GPIOA 	#define dSPIN_BUSY_Pin
-// GPIO_Pin_11 	#define dSPIN_BUSY_Port		GPIOB
-//
-//	#define dSPIN_FLAG_Pin		GPIO_Pin_10
-//	#define dSPIN_FLAG_Port		GPIOB
-//
-//	#define dSPIN_STBY_RESET_Pin    GPIO_Pin_5
-//	#define dSPIN_STBY_RESET_Port   GPIOC
-//	#define TIM_PWM                 TIM5
-//
-//				/* List all the peripherals, which CLKs have to
-// be  enabled! */
-//				/* Note : RCC_APB2Periph_AFIO is mandatory for
-// interrupt enabling */ 	#define dSPIN_PERIPHERAL_CLKs_APB1
-//(RCC_APB1Periph_TIM5)
-//	#define dSPIN_PERIPHERAL_CLKs_APB2	(RCC_APB2Periph_SPI1 | \
-//																								 RCC_APB2Periph_GPIOA
-//| \
-//																								 RCC_APB2Periph_GPIOB
-//| \
-//																								 RCC_APB2Periph_GPIOC
-//| \
-//																								 RCC_APB2Periph_AFIO)
-//	#endif //modul 0 testeinstellung
 #endif
-/**
- * @}
- */

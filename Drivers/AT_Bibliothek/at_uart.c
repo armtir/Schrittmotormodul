@@ -1,6 +1,17 @@
+/*
+ *******************************************************************************
+ * File:    at_uart.c
+ * Author:  Armin Tirala
+ * Version: V4.1
+ * Date:    28.12.2017
+ * IDE:     Eclipse Neon.3
+ * Note:
+ *******************************************************************************
+ */
+
 #include "at_uart.h"
 #include "at_schrittmotor.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "stdlib.h"
 #include "stm32f4xx_hal.h"
 #include "string.h"
@@ -55,12 +66,12 @@ int at_uart_interpreter(const char* UART_Buffer) {
  */
 void commands(int argc, char* argv[]) {
    char option = 0;
-   int direction = 0;
-   int speed = 0;
-   int parameter = 0;
-   int wert = 0;
-   int n_step = 0;
-   int pos = 0;
+   uint8_t direction = 0;
+   uint16_t speed = 0;
+   uint8_t parameter = 0;
+   uint32_t wert = 0;
+   uint8_t n_step = 0;
+   uint32_t pos = 0;
 
    while (*argv != NULL) {
       /*

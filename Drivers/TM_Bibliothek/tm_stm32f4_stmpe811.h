@@ -98,7 +98,7 @@ SDA        PC9         Data pin for I2C
 //#include "stm32f4xx_hal.h"
 //#include "stm32f4xx_hal_rcc.h"
 //#include "stm32f4xx_hal_gpio.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "tm_stm32_i2c.h"
 #include "tm_stm32_delay.h"
 

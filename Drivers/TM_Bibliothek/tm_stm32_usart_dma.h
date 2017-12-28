@@ -103,7 +103,7 @@ UART8      | DMA1 | DMA Stream 0 | DMA Channel 5
  */
 
 #include "stm32fxxx_hal.h"
-#include "defines.h"
+#include "at_defines.h"
 #include "tm_stm32_dma.h"
 #include "tm_stm32_usart.h"
 #include "string.h"

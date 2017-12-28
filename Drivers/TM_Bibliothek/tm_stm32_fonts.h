@@ -76,7 +76,7 @@ extern "C" {
  - string.h
 \endverbatim
  */
-#include "defines.h"
+#include "at_defines.h"
 #include "stm32fxxx_hal.h"
 #include "string.h"
 
