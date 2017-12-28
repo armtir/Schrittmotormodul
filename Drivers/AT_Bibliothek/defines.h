@@ -70,19 +70,25 @@
 
 #define AT_ERROR HAL_GPIO_WritePin(GPIOG, GPIO_PIN_14, GPIO_PIN_SET)
 
-#define LETZTE_ZEILE 33
-#define LETZTE_SPALTE 34
+//#define LETZTE_ZEILE 28
+//#define LETZTE_SPALTE 34
 #define LESEN 0
 #define SCHREIBEN 1
 #define FORWARD 1
 #define CONFIG_1 99
 #define CONFIG_2 98
+#define CONFIG_3 97
+#define CONFIG_4 96
+#define IMAGE_ON
+#define ENTPRELL_DELAY HAL_Delay(100);
+
 #define REVERSE 0
 /* Der Buffer muss nur so groß sein, dass sich ein Befehl ausgeht ?34? */
 #define MAX_BUFFER 50
 /* 32 Zeilen, 34 Spalten bei einer Schrift von 7x10 */
-#define MAX_ZEILE 32
+#define MAX_ZEILE 31
 #define MAX_SPALTE 34
+#define MAX_SEITE 8
 
 /*
  *******************************************************************************

@@ -5,8 +5,8 @@
 
 /*
  * SPI lesen und schreiben an Expander
- * Die Funktionen sind im Prinzip die selben. Zwecks der übersichtlichkeit
- * wurden sie einzeln aufgeführt
+ * Die Funktionen sind im Prinzip die selben. Zwecks der ï¿½bersichtlichkeit
+ * wurden sie einzeln aufgefï¿½hrt
  * Das muss mit zeigern gehen....
  */
 void at_expander_senddata(uint8_t opcode, uint8_t adress, uint8_t data) {
@@ -67,7 +67,7 @@ int at_expander_init(void) {
    at_expander_readdata(ExpanderA, INTFA, 0x00);
    /* Quitieren des Interupts */
    at_expander_readdata(ExpanderA, INTCAPA, 0x00);
-   /* STCK also GPIO OUT für alle Pins */
+   /* STCK also GPIO OUT fï¿½r alle Pins */
    at_expander_senddata(ExpanderA, IODIRB, 0x00);
    /* und dann auf 0 setzen */
    at_expander_senddata(ExpanderA, BGPIO, 0x00);
@@ -77,7 +77,7 @@ int at_expander_init(void) {
     * Expander B
     * Register A0-A7 Interupt "Busy"
     * Interuptflag B setzen Active-High
-    * NVIC Priorität gering --> 4
+    * NVIC Prioritï¿½t gering --> 4
     * De ham wos beinand in dem Datenblattl...
     * Wir brauchen Interrupt On pin
     */
@@ -104,20 +104,10 @@ int at_expander_init(void) {
 }
 
 /*
- * Einfacher TEST ob man damit StepClock bedienen kann...
- * Wird gekübelt
- * Die logisch High Dauer ist ca 5us (gemessen mit Logik Analysator)
- */
-void at_stck(uint8_t port) {
-   at_expander_senddata(ExpanderA, BGPIO, port);
-   at_expander_senddata(ExpanderA, BGPIO, port);
-}
-
-/*
  * Reset der Linken und Rechten Linie
- * Weil auch CLK Enable in der selben Bank ist, darf dieses nicht gelöscht
+ * Weil auch CLK Enable in der selben Bank ist, darf dieses nicht gelï¿½scht
  * werden, daher die Abfrage...
- * Ist aber noch nicht gescheit gelöst, da die CLK jetzt via #def aktiviert ist
+ * Ist aber noch nicht gescheit gelï¿½st, da die CLK jetzt via #def aktiviert ist
  */
 void at_reset(void) {
    at_expander_senddata(ExpanderB, BGPIO, 0x06);
@@ -130,10 +120,20 @@ void at_reset(void) {
 }
 
 /*
- * Diese Funktion ist eigentlich nur für Debugzwecke eingebaut
+ * Diese Funktion ist eigentlich nur fï¿½r Debugzwecke eingebaut
  * um zu sehen, ob der Expander funktioniert
  */
 void at_expander_status(void) {
    uint8_t test = at_expander_readdata(ExpanderB, IOCON, 0x00);
-   LCD_INFO("IOCON:\n" BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(test));
+ //  LCD_INFO("IOCON:\n" BYTE_TO_BINARY_PATTERN, BYTE_TO_BINARY(test));
+}
+
+/*
+ * Einfacher TEST ob man damit StepClock bedienen kann...
+ * Wird gekï¿½belt
+ * Die logisch High Dauer ist ca 5us (gemessen mit Logik Analysator)
+ */
+void at_stck(uint8_t port) {
+   at_expander_senddata(ExpanderA, BGPIO, port);
+   at_expander_senddata(ExpanderA, BGPIO, port);
 }

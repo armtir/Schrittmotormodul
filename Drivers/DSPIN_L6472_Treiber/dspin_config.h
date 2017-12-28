@@ -119,7 +119,8 @@
   /******************************* Others *************************************/
 	/* Register : OCD_TH */
         /* Overcurrent threshold settings via enum dSPIN_OCD_TH_TypeDef */
-    #define dSPIN_CONF_PARAM_OCD_TH (dSPIN_OCD_TH_3375mA)
+/* Armin 13.11.2017 von 3375mA auf 375mA geaendert SICHERHEIT */
+    #define dSPIN_CONF_PARAM_OCD_TH (dSPIN_OCD_TH_375mA)
 
 	/* Register : STALL_TH */
 	/* Stall threshold settings in mA, range 31.25mA to 4000mA */

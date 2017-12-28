@@ -88,7 +88,7 @@ TM_STMPE811_t LCD_Config;
  *    TM in einer Unterfunktion aufgerufen wird.
  *    Ich m�sste allen Funktionen diesen Parameter �bergeben und das ist eine
  *    Heidenarbeit
- *    Sie wird nur von der UART Funktion und der Initialisierung geschrieben
+ *    Sie wird nur von der UART Funktion  geschrieben
  *    alle anderen lesen
  *
  * INIT_DONE:
@@ -97,6 +97,8 @@ TM_STMPE811_t LCD_Config;
  */
 uint8_t anschluss = 0;
 uint8_t aktive_ports = 0;
+uint8_t serie[9] = {0, 0, 0, 0, 0, 0, 0, 0,0};
+
 uint8_t INIT_DONE = FALSE;
 
 /* Diese hier werden noch als lokale
@@ -164,7 +166,7 @@ int main(void) {
    MX_I2C3_Init();
 
    /* USER CODE BEGIN 2 */
-      
+
    /*
     * Setze alle CS Signale auf Inaktiv
     * Könnte man auch mit Enumeration lösen...
@@ -187,11 +189,11 @@ int main(void) {
    HAL_Delay(100);
    at_lcd_init(&LCD_Config);
    at_lcd_page_0();
-   HAL_Delay(3000);
+   HAL_Delay(5000);
 
    TM_LCD_Init();
-    TM_LCD_SetXY(0, 0);
-    TM_LCD_SetFont(&TM_Font_7x10);
+   TM_LCD_SetXY(0, 0);
+   TM_LCD_SetFont(&TM_Font_11x18);
 
    LCD_INFO("Initialisierung");
    HAL_Delay(1000);
@@ -199,12 +201,13 @@ int main(void) {
    HAL_Delay(100);
    at_expander_init();
    HAL_Delay(100);
-   LCD_INFO("Initialisierung abgeschlossen");
-   LCD_INFO("Aktive Module:")
+   LCD_INFO("abgeschlossen");
+   HAL_Delay(1000);
+   LCD_INFO("aktive Module")
    LCD_INFO(BYTE_TO_BINARY_PATTERN8, BYTE_TO_BINARY8(aktive_ports));
-   HAL_Delay(2000);
+   HAL_Delay(3000);
    TM_LCD_Init();
-   HAL_Delay(2000);
+
 
    /* Starte HAL UART Interrupt */
    HAL_UART_Receive_IT(&huart1, &UART1_Data, sizeof(UART1_Data));
@@ -673,14 +676,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 
       flag_input = at_expander_readdata(ExpanderA, INTFA, 0x00);
 
-      snprintf(flag, sizeof flag, BYTE_TO_BINARY_PATTERN,
+     snprintf(flag, sizeof flag, BYTE_TO_BINARY_PATTERN,
                BYTE_TO_BINARY(flag_input));
       flag[8] = 'F';
       flag[9] = 0x00;
-      if (aktuelle_seite == 1) {
-         TM_LCD_SetXY(77, 310);
-         TM_LCD_Puts(flag);
-      }
+     // if (aktuelle_seite == 1) {
+     //    TM_LCD_SetXY(77, 310);
+      //   TM_LCD_Puts(flag);
+    //  }
       /*
        * Damit der String sauber an den UART übergeben wird, wird CR NL und NULL
        * eingefügt
@@ -708,10 +711,10 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
                BYTE_TO_BINARY(busy_input));
       busy[8] = 'B';
       busy[9] = 0x00;
-      if (aktuelle_seite == 1) {
-         TM_LCD_SetXY(0, 310);
-         TM_LCD_Puts(busy);
-      }
+    //  if (aktuelle_seite == 1) {
+      //   TM_LCD_SetXY(0, 310);
+     //    TM_LCD_Puts(busy);
+     // }
 
       busy[9] = 0x0A;
       busy[10] = 0x0D;
@@ -736,10 +739,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
     * Bei Tastendruck aktiv
     */
    if (GPIO_Pin == GPIO_PIN_15 && INIT_DONE) {
-      // at_lcd_test(&LCD_Config);
       at_lcd_state(&LCD_Config);
-      HAL_Delay(100);
-      // touch detection delay register verhindert "prellen" --> wäre besser
+      /* touch detection delay register verhindert "prellen" --> wäre besser */
+      ENTPRELL_DELAY;
       /* Setze Interrupt zurück */
       TM_I2C_Write(STMPE811_I2C, 0x82, 0x0B, 0x01);
    }

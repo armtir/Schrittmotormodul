@@ -1,14 +1,9 @@
 #include "at_uart.h"
+#include "at_schrittmotor.h"
 #include "defines.h"
+#include "stdlib.h"
 #include "stm32f4xx_hal.h"
 #include "string.h"
-#include "tm_stm32_fonts.h"
-#include "tm_stm32_lcd.h"
-#include "tm_stm32_usart.h"
-#include "tm_stm32f4_stmpe811.h"
-//#include "unistd.h"
-
-#include "stdint.h"
 
 void commands(int argc, char* argv[]);
 void help(void);
@@ -18,20 +13,6 @@ void help(void);
  * UART Interpreter
  *******************************************************************************
  */
-
-/*
- * -m <int>            Modul 1-8
- * -c <char>           Parameter r:read, w:write, 1:mem1, 2:mem2
- * -r <char> <int>     Run f:forward, r:return, speed
- * -s                  Stop
- * -o                  Off
- * -h                  Help
- *
- *
-
-
-*/
-
 int at_uart_interpreter(const char* UART_Buffer) {
    /*
     * ich glaube jetzt habe ich es verstanden
@@ -39,7 +20,6 @@ int at_uart_interpreter(const char* UART_Buffer) {
     * warum array? weil argv aus mehreren argumenten besteht erstes argument
     * zweites argument etc.
     */
-   int i = 0;
    int argc = 0;
    int buffer_len = strlen(UART_Buffer) + 1;  // strlen(UART_Buffer)+1;
    char buf[buffer_len];
@@ -48,7 +28,7 @@ int at_uart_interpreter(const char* UART_Buffer) {
    memcpy(buf, UART_Buffer, buffer_len);
 
    char* argv[10];
-   const char* token;
+   char* token;
 
    token = strtok(buf, delimiter);
 
@@ -79,6 +59,8 @@ void commands(int argc, char* argv[]) {
    int speed = 0;
    int parameter = 0;
    int wert = 0;
+   int n_step = 0;
+   int pos = 0;
 
    while (*argv != NULL) {
       /*
@@ -89,40 +71,48 @@ void commands(int argc, char* argv[]) {
        *
        * Wichtig hierbei ist die Abfolge in Switch. Je nach Priorität
        * ist ein Befehl weiter oben, bzw. weiter unten eingetragen
+       *
+       * Das Delay in Case c ist dazu da, da sonst der nächste Befehl
+       * nicht übernommen wird
        */
 
       if (strlen(*argv) == 1) {
          option = **argv;
 
          switch (option) {
+            case 'h':
+               help();
+               break;
+
             case 'm':
                argv++;
                anschluss = atoi(*argv);
                break;
 
-            case 'o':
-               at_schrittmotor_off();
-               break;
-
-            case 's':
-               at_schrittmotor_stop();
-               break;
-
             case 'c':
                argv++;
                if (**argv == 'r') {
-                  at_schrittmotor_param(LESEN,0,0);
+                  at_schrittmotor_param(LESEN, 0, 0);
                } else if (**argv == 'w') {
                   argv++;
                   parameter = atoi(*argv);
                   argv++;
                   wert = atoi(*argv);
                   at_schrittmotor_param(SCHREIBEN, parameter, wert);
+                  HAL_Delay(50);
                } else if (**argv == '1') {
-                  at_schrittmotor_param(CONFIG_1,0,0);
+                  at_schrittmotor_param(CONFIG_1, 0, 0);
                } else if (**argv == '2') {
-                  at_schrittmotor_param(CONFIG_2,0,0);
+                  at_schrittmotor_param(CONFIG_2, 0, 0);
+               } else if (**argv == '3') {
+                  at_schrittmotor_param(CONFIG_3, 0, 0);
+               } else if (**argv == '4') {
+                  at_schrittmotor_param(CONFIG_4, 0, 0);
                }
+               break;
+
+            case 'a':
+               at_schrittmotor_getstatus();
                break;
 
             case 'r':
@@ -137,13 +127,84 @@ void commands(int argc, char* argv[]) {
                at_schrittmotor_run(direction, speed);
                break;
 
-            case 'h':
-               help();
+            case 's':
+               argv++;
+               if (**argv == 'h') {
+                  at_schrittmotor_stop_hard();
+               } else if (**argv == 's') {
+                  at_schrittmotor_stop_soft();
+               }
+               break;
+
+            case 'o':
+               argv++;
+               if (**argv == 'h') {
+                  at_schrittmotor_off_hard();
+               } else if (**argv == 's') {
+                  at_schrittmotor_off_soft();
+               }
+               break;
+
+            case 't':
+               argv++;
+               if (**argv == 'f') {
+                  direction = FORWARD;
+               } else if (**argv == 'r') {
+                  direction = REVERSE;
+               }
+               at_schrittmotor_step(direction);
+               break;
+
+            case 'y':
+               at_schrittmotor_reset();
+               break;
+
+            case 'z':
+               at_schrittmotor_resetpos();
+               break;
+
+            case 'v':
+               argv++;
+               if (**argv == 'f') {
+                  direction = FORWARD;
+               } else if (**argv == 'r') {
+                  direction = REVERSE;
+               }
+               argv++;
+               n_step = atoi(*argv);
+
+               at_schrittmotor_move(direction, n_step);
+               break;
+
+            case 'g':
+               argv++;
+               pos = atoi(*argv);
+               at_schrittmotor_goto(pos);
+               break;
+
+            case 'd':
+               argv++;
+               if (**argv == 'f') {
+                  direction = FORWARD;
+               } else if (**argv == 'r') {
+                  direction = REVERSE;
+               }
+               argv++;
+               pos = atoi(*argv);
+               at_schrittmotor_gotodir(direction, pos);
+               break;
+
+            case 'e':
+               at_schrittmotor_gohome();
+               break;
+
+            case 'k':
+               at_schrittmotor_gomark();
                break;
 
             default:
-               LCD_INFO("Falsche Eingabe, Hilfe: -h");
-               TM_USART_Puts(USART1, "Falsche Eingabe, Hilfe: -h\n");
+               //  LCD_INFO("Falsche Eingabe, Hilfe: -h");
+               UART_INFO("Falsche Eingabe, Hilfe: -h");
                break;
          }
       }
@@ -159,15 +220,30 @@ void commands(int argc, char* argv[]) {
 void help(void) {
    UART_INFO("Hilfe:\n");
    UART_INFO("Kommandos:");
-   UART_INFO("-m\tModul\t-m <1-8>");
-   UART_INFO("-c\tConfig\t-c <r,w,1,2> <n> <wert>");
-   UART_INFO("-r\tRun\t-r <f,r> <speed>");
-   UART_INFO("-s\tStop");
-   UART_INFO("-o\tOff");
-   UART_INFO("\n\n");
+   UART_INFO("-h\tHilfe");
+   UART_INFO("-m\tModul\t<1-8>");
+   UART_INFO("-c\tConfig\t<r,w,1,2> <n> <wert>");
+   UART_INFO("-a\tGet Status");
+   UART_INFO("-r\tRun\t<f,r> <speed>");
+   UART_INFO("-s\tStop\t<h,s>");
+   UART_INFO("-o\tOff\t<h,s>");
+   UART_INFO("-t\tStep\t<f,r>");
+   UART_INFO("-y\tReset Motor");
+   UART_INFO("-z\tReset Position");
+   UART_INFO("-v\tMove\t<f,r> <step>");
+   UART_INFO("-g\tGoTo\t<position>");
+   UART_INFO("-d\tGoTo Dir\t<f,r> <position>");
+   UART_INFO("-e\tGo Home");
+   UART_INFO("-k\tGo Mark");
+   // UART_INFO("-u\tGo Until");
+   // UART_INFO("-w\tRelease Switch");
+   UART_INFO("\n");
 
+   UART_INFO("\nModul: -m");
+   UART_INFO("Einstellen des Moduls 1-8 (Bezeichnung auf PCB)");
+   UART_INFO("Bsp.: Aktivieren des Moduls 7: \"-m 7\"");
 
-   UART_INFO("Schrittmotorkonfiguration (-c)");
+   UART_INFO("\nSchrittmotorkonfiguration: -c");
    UART_INFO("n   Type       Range Unit");
    UART_INFO("1 : ABS_POS     <int>");
    UART_INFO("2 : EL_POS:     <int>");
@@ -188,31 +264,22 @@ void help(void) {
    UART_INFO("22: STEP_MODE:  <1,2,4,8,16>");
    UART_INFO("23: ALARM_EN:   <Binary>");
    UART_INFO("24: CONFIG:     <Binary>");
+   UART_INFO("Bsp.: Aenderung der Thresholdspannung: \"-c w 19 750\"");
+   UART_INFO("\nVoreingestellte Konfigurationen:");
+   UART_INFO("1:L3518 (Schrittmotor mit Gewindestange)");
+   UART_INFO("2:LSP1518 (kleiner Schrittmotor)");
+   UART_INFO("3:SY57STH41 (grosser Schrittmotor)");
+   UART_INFO("4:17H130H (doppelseitig");
+   UART_INFO("\nRun: -r");
+   UART_INFO("Schrittmotor in eine konstante Bewegung zu setzen");
+   UART_INFO("Bsp.: Rueckwaerts mit einem Wert von 30: \"-r r 30\"");
 
+   UART_INFO("\nStop: -s");
+   UART_INFO("Stoppen des Motors bei aktiver Thresholdspannung");
+   UART_INFO("Das Stoppen des Motors erfolg \"Soft\" --> siehe Datenblatt");
+   UART_INFO("Bsp.: \"-s\"");
 
-
-
-
-}
-
-/*
- *******************************************************************************
- * UART Testfunktion (to be deleted)
- *******************************************************************************
- */
-void uart_test(void) {
-   char str[30];
-   char mybuffer[100];
-   uint16_t uarttest = 666;
-
-   TM_USART_Puts(USART1, "Hello world\n");
-
-   if (TM_USART_Gets(USART1, mybuffer, sizeof(mybuffer))) {
-      /* Send string back */
-      TM_USART_Puts(USART1, mybuffer);
-   }
-   // sprintf(str, "UART    \n\nX: %d",  uarttest);
-
-   TM_LCD_SetXY(60, 160);
-   TM_LCD_Puts(str);
+   UART_INFO("\n Off: -o");
+   UART_INFO("Ausschalten der H-Bruecke --> Schrittmotor spannungslos");
+   UART_INFO("Bsp.: \"-o\"");
 }

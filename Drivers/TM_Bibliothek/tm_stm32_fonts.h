@@ -2,12 +2,12 @@
  * @author  Tilen Majerle
  * @email   tilen@majerle.eu
  * @website http://stm32f4-discovery.net
- * @link    
+ * @link
  * @version v1.0
  * @ide     Keil uVision
  * @license MIT
  * @brief   Fonts library for LCD libraries
- *	
+ *
 \verbatim
    ----------------------------------------------------------------------
     Copyright (c) 2016 Tilen Majerle
@@ -16,8 +16,8 @@
     obtaining a copy of this software and associated documentation
     files (the "Software"), to deal in the Software without restriction,
     including without limitation the rights to use, copy, modify, merge,
-    publish, distribute, sublicense, and/or sell copies of the Software, 
-    and to permit persons to whom the Software is furnished to do so, 
+    publish, distribute, sublicense, and/or sell copies of the Software,
+    and to permit persons to whom the Software is furnished to do so,
     subject to the following conditions:
 
     The above copyright notice and this permission notice shall be
@@ -28,7 +28,7 @@
     OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE
     AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
     HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING 
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
     FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
     OTHER DEALINGS IN THE SOFTWARE.
    ----------------------------------------------------------------------
@@ -55,7 +55,7 @@ extern "C" {
  * Default fonts library. It is used in all LCD based libraries.
  *
  * \par Supported fonts
- * 
+ *
  * Currently, these fonts are supported:
  *  - 7 x 10 pixels
  *  - 11 x 18 pixels
@@ -76,8 +76,8 @@ extern "C" {
  - string.h
 \endverbatim
  */
-#include "stm32fxxx_hal.h"
 #include "defines.h"
+#include "stm32fxxx_hal.h"
 #include "string.h"
 
 /**
@@ -90,18 +90,31 @@ extern "C" {
  * @brief  Font structure used on my LCD libraries
  */
 typedef struct {
-	uint8_t FontWidth;    /*!< Font width in pixels */
-	uint8_t FontHeight;   /*!< Font height in pixels */
-	const uint16_t *data; /*!< Pointer to data font data array */
+   uint8_t FontWidth;    /*!< Font width in pixels */
+   uint8_t FontHeight;   /*!< Font height in pixels */
+   const uint16_t* data; /*!< Pointer to data font data array */
 } TM_FONT_t;
 
-/** 
- * @brief  String width and height in unit of pixels 
+/**
+ * @brief  String width and height in unit of pixels
  */
 typedef struct {
-	uint16_t Width;       /*!< String width in units of pixels */
-	uint16_t Height;      /*!< String height in units of pixels */
+   uint16_t Width;  /*!< String width in units of pixels */
+   uint16_t Height; /*!< String height in units of pixels */
 } TM_FONT_SIZE_t;
+
+typedef struct {
+   int16_t width;
+   int16_t height;
+   int16_t bytes_per_pixel;  // 2:RGB16, 3:RGB, 4:RGBA
+   const char* pixel_data;
+} GG_ImageDef_t;
+
+// la puta madre hay que usar extern, no las declara solo las define ( definir
+// no genera espaio de memoria)
+extern GG_ImageDef_t fhcampuswien;
+
+uint8_t GG_ILI9341_PutImage(uint16_t x, uint16_t y, GG_ImageDef_t* image);
 
 /**
  * @}
@@ -114,17 +127,17 @@ typedef struct {
  */
 
 /**
- * @brief  7 x 10 pixels font size structure 
+ * @brief  7 x 10 pixels font size structure
  */
 extern TM_FONT_t TM_Font_7x10;
 
 /**
- * @brief  11 x 18 pixels font size structure 
+ * @brief  11 x 18 pixels font size structure
  */
 extern TM_FONT_t TM_Font_11x18;
 
 /**
- * @brief  16 x 26 pixels font size structure 
+ * @brief  16 x 26 pixels font size structure
  */
 extern TM_FONT_t TM_Font_16x26;
 
@@ -132,17 +145,13 @@ extern TM_FONT_t TM_Font_16x26;
  * @}defgroup  Bitmap
  * @}brief Diverse Bitmaps
  */
- 
+
 /**
- * @brief  FH Logo 
- * 1: 80x40
+ * @brief  FH Logo
  * 2: 128x64
  * generiert mit IMAGE2GLCD
- */ 
-extern const unsigned char FHLogo [];
-extern const unsigned char fh_logo_big[];
- 
- 
+ */
+
 /**
  * @defgroup TM_FONTS_Functions
  * @brief    Library functions
@@ -150,22 +159,25 @@ extern const unsigned char fh_logo_big[];
  */
 
 /**
- * @brief  Calculates string length and height in units of pixels depending on string and font used
+ * @brief  Calculates string length and height in units of pixels depending on
+ * string and font used
  * @param  *str: String to be checked for length and height
- * @param  *SizeStruct: Pointer to empty @ref TM_FONTS_SIZE_t structure where informations will be saved
+ * @param  *SizeStruct: Pointer to empty @ref TM_FONTS_SIZE_t structure where
+ * informations will be saved
  * @param  *Font: Pointer to @ref TM_FontDef_t font used for calculations
  * @retval Pointer to string used for length and height
  */
-char* TM_FONT_GetStringSize(char* str, TM_FONT_SIZE_t* SizeStruct, TM_FONT_t* Font);
+char* TM_FONT_GetStringSize(char* str, TM_FONT_SIZE_t* SizeStruct,
+                            TM_FONT_t* Font);
 
 /**
  * @}
  */
- 
+
 /**
  * @}
  */
- 
+
 /**
  * @}
  */
@@ -175,6 +187,4 @@ char* TM_FONT_GetStringSize(char* str, TM_FONT_SIZE_t* SizeStruct, TM_FONT_t* Fo
 }
 #endif
 
- 
 #endif
-
