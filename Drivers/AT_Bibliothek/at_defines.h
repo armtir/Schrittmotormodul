@@ -47,6 +47,9 @@
 #define IMAGE_ON
 #define ENTPRELL_DELAY HAL_Delay(100);
 
+
+#define DEBUG_SEITE 7
+
 #define REVERSE 0
 /* Der Buffer muss nur so groß sein, dass sich ein Befehl ausgeht ?34? */
 #define MAX_BUFFER 50

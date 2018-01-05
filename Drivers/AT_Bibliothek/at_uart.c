@@ -233,7 +233,7 @@ void help(void) {
    UART_INFO("Kommandos:");
    UART_INFO("-h\tHilfe");
    UART_INFO("-m\tModul\t<1-8>");
-   UART_INFO("-c\tConfig\t<r,w,1,2> <n> <wert>");
+   UART_INFO("-c\tConfig\t<r,w,1,2,3,4> <n> <wert>");
    UART_INFO("-a\tGet Status");
    UART_INFO("-r\tRun\t<f,r> <speed>");
    UART_INFO("-s\tStop\t<h,s>");

@@ -604,13 +604,12 @@ void at_lcd_seite(TM_STMPE811_t* LCD_Config) {
          at_schrittmotor_print_data(CONFIG_4);
 
       } break;
-      /* Parameterausgabe aktueller Anschluss */
       case 7: {
          aktuelle_seite = 7;
-
          at_lcd_fusszeile();
+         at_lcd_debug();
       } break;
-
+      /* Parameterausgabe aktueller Anschluss */
       case 8: {
          aktuelle_seite = 8;
          at_lcd_fusszeile();
@@ -654,7 +653,7 @@ void at_lcd_debug(uint8_t* UART_Aux) {
    /* char array MAX_ZEILE + 1 für \0 */
    static char debug_buffer[MAX_ZEILE + 1][MAX_SPALTE + 1];
 
-   if (aktuelle_seite == 2) {
+   if (aktuelle_seite == DEBUG_SEITE) {
       /* Initialisiere LCD */
       at_lcd_fusszeile();
       TM_LCD_SetFont(&TM_Font_7x10);
@@ -678,7 +677,7 @@ void at_lcd_debug(uint8_t* UART_Aux) {
     */
    if (aktuelle_Zeile < MAX_ZEILE) {
       for (i = 1; i <= aktuelle_Zeile; i++) {
-         if (aktuelle_seite == 7) {
+         if (aktuelle_seite == DEBUG_SEITE) {
             TM_LCD_Puts(debug_buffer[i - 1]);
          }
       }
@@ -687,7 +686,7 @@ void at_lcd_debug(uint8_t* UART_Aux) {
    } else {
       for (i = 1; i < MAX_ZEILE; i++) {
          memcpy(&debug_buffer[i - 1], &debug_buffer[i], MAX_SPALTE);
-         if (aktuelle_seite == 7) {
+         if (aktuelle_seite == DEBUG_SEITE) {
             TM_LCD_Puts(debug_buffer[i - 1]);
          }
       }
